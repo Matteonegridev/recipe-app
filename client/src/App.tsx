@@ -6,6 +6,7 @@ import CreateRecipe from "./pages/CreateRecipe";
 import Navbar from "./components/Navbar";
 import ReactQueryContext from "./context/ReactQueryContext";
 import Protected from "./auth/Protected";
+import ReadMore from "./pages/ReadMore";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/recipes/:recipeId" element={<ReadMore />} />
             <Route path="/auth" element={<Auth />} />
             <Route
               path="/create-recipe"

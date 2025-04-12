@@ -5,7 +5,8 @@ import _ from "lodash";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
-type Recipes = {
+export type Recipes = {
+  id: string;
   name: string;
   ingredients: string[];
   instructions: string;
@@ -16,6 +17,7 @@ type Recipes = {
 
 function CreateRecipe() {
   const [recipes, setRecipes] = useState<Recipes>({
+    id: "",
     name: "",
     ingredients: [],
     instructions: "",

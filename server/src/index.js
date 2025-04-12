@@ -39,7 +39,7 @@ app.use(cookieParser());
 app.use(express.static("src/public"));
 
 //Home:
-app.get("/", recipeControllers.getRecipes);
+app.get("/home", recipeControllers.getRecipes);
 // user route:
 app.use("/user", usersRouter);
 // recipe route:

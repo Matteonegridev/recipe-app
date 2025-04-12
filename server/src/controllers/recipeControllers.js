@@ -3,13 +3,12 @@ import User from "../schema/UserModel.js";
 import uuid4 from "uuid4";
 
 const getRecipes = async (req, res) => {
-  const { name } = req.body;
-  const recipes = await Recipe.findOne({ name });
+  const recipes = await Recipe.find();
 
   if (!recipes) {
-    res.status(401).json({ message: "Recipe not found" });
+    res.status(404).json({ message: "Recipe not found" });
   }
-  res.status(201).send(res.body);
+  res.status(201).send(recipes);
 };
 
 const createRecipes = async (req, res) => {
@@ -48,7 +47,8 @@ const createRecipes = async (req, res) => {
 
 // Save recipes into user's profile. (savedRecipe array)
 const saveRecipes = async (req, res) => {
-  const fetchedRecipe = await Recipe.findById(req.body.recipeId);
+  const { recipeId } = req.body;
+  const fetchedRecipe = await Recipe.findById(recipeId);
   const fetchedUser = await User.findById(req.body.username);
 
   try {
@@ -58,7 +58,10 @@ const saveRecipes = async (req, res) => {
     await fetchedUser.save();
 
     return res.status(201).json({ message: "Recipe save successfully!" });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+    throw new Error(error);
+  }
 };
 
 // Find saved recipes of a given user:
