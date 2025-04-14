@@ -1,8 +1,9 @@
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ReactNode, SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import axios, { AxiosError } from "axios";
 import { AuthQueryContext } from "../hooks/useAuthQuery";
+import { useQueryClient } from "@tanstack/react-query";
 
 type PropsContext = {
   children: ReactNode;
@@ -21,10 +22,9 @@ type Credentials = {
 };
 
 export type ContextAuthType = {
-  data: Credentials | undefined;
-
+  data: Credentials | null | undefined;
   isLoading: boolean;
-  login: (user: User) => Promise<void>;
+  login: (user: User) => Promise<Credentials>;
   register: (user: User) => Promise<void>;
   logout: () => Promise<void>;
   displayError: {
@@ -44,24 +44,33 @@ export type ContextAuthType = {
 const URL = "http://localhost:3000";
 
 // Check activity, give back the data. Stale time 5 minutes.
-const fetchUser = async () => {
-  const response = await axios.get(`${URL}/user/profile`, {
-    withCredentials: true,
-  });
-  return response.data;
+const fetchUser = async (): Promise<Credentials | null> => {
+  try {
+    const response = await axios.get(`${URL}/user/profile`, {
+      withCredentials: true,
+    });
+    console.log("fetchUser:", response.data);
+    return response.data;
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response?.status === 401) {
+      // user is not logged in
+      return null;
+    }
+    return null;
+  }
 };
-
-const queryClient = new QueryClient();
 
 function AuthContextWithQuery({ children }: PropsContext) {
   const [displayError, setDisplayError] = useState<{
     username?: string;
     password?: string;
   }>({});
-  const [isLogged, setIsLogged] = useState(false);
-  const navigate = useNavigate();
 
-  const { data, isLoading } = useQuery<Credentials>({
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { data, isLoading } = useQuery<Credentials | null>({
     queryKey: ["user"],
     queryFn: fetchUser,
     staleTime: 1000 * 60 * 5,
@@ -72,17 +81,14 @@ function AuthContextWithQuery({ children }: PropsContext) {
       setDisplayError({});
     }, delay);
   };
+
   useEffect(() => {
-    if (data) {
-      setIsLogged(true);
-    } else {
-      setIsLogged(false);
-    }
-  }, [data]); //
+    console.log("🧠 Auth state changed:", { data, isLoading });
+  }, [data, isLoading]);
 
   // Login:
   const loginMutation = useMutation({
-    mutationFn: async ({ username, password }: User): Promise<void> => {
+    mutationFn: async ({ username, password }: User): Promise<Credentials> => {
       const response = await axios.post(
         `${URL}/user/login`,
         { username, password },
@@ -90,10 +96,11 @@ function AuthContextWithQuery({ children }: PropsContext) {
       );
       return response.data;
     },
-    onSuccess: (response) => {
-      queryClient.setQueryData(["user"], response);
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      setIsLogged(true);
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+        refetchType: "active",
+      });
       navigate("/");
     },
     onError: (err) => {
@@ -132,9 +139,10 @@ function AuthContextWithQuery({ children }: PropsContext) {
       await axios.post(`${URL}/user/logout`, {}, { withCredentials: true });
     },
     onSuccess: () => {
-      queryClient.setQueryData(["user"], null);
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      setIsLogged(false);
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+        refetchType: "active",
+      });
       navigate("/auth");
     },
   });
@@ -150,7 +158,7 @@ function AuthContextWithQuery({ children }: PropsContext) {
         setDisplayError,
         displayError,
         resetErrors,
-        isLogged,
+        isLogged: !!data,
       }}
     >
       {children}

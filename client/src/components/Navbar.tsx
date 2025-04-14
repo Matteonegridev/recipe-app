@@ -3,7 +3,6 @@ import { Link } from "react-router";
 import { useAuthQuery } from "../hooks/useAuthQuery";
 
 function Navbar() {
-  // const { isLogged, logout } = useAuth();
   const { logout, isLogged } = useAuthQuery();
   return (
     <header className="w-full">
