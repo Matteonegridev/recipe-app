@@ -10,13 +10,18 @@ type Props = {
 function Protected({ children }: Props) {
   const { isLogged } = useAuthQuery();
 
-  return (
-    <div>
-      {isLogged ? children : "you must be logged to see this page"}
+  if (!isLogged) {
+    return (
+      <div className="mt-10 text-center">
+        <p>You must be logged in to see this page.</p>
+        <Link to="/auth" className="text-blue-500 underline">
+          Login
+        </Link>
+      </div>
+    );
+  }
 
-      <div>{!isLogged && <Link to={"/auth"}>Login</Link>}</div>
-    </div>
-  );
+  return <>{children}</>;
 }
 
 export default Protected;

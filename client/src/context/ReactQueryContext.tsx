@@ -1,5 +1,5 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { ReactNode, SetStateAction, useState } from "react";
+import { ReactNode, SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import axios, { AxiosError } from "axios";
 import { AuthQueryContext } from "../hooks/useAuthQuery";
@@ -58,10 +58,10 @@ function AuthContextWithQuery({ children }: PropsContext) {
     username?: string;
     password?: string;
   }>({});
-  const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [isLogged, setIsLogged] = useState(false);
   const navigate = useNavigate();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<Credentials>({
     queryKey: ["user"],
     queryFn: fetchUser,
     staleTime: 1000 * 60 * 5,
@@ -72,6 +72,13 @@ function AuthContextWithQuery({ children }: PropsContext) {
       setDisplayError({});
     }, delay);
   };
+  useEffect(() => {
+    if (data) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+  }, [data]); //
 
   // Login:
   const loginMutation = useMutation({
@@ -85,6 +92,7 @@ function AuthContextWithQuery({ children }: PropsContext) {
     },
     onSuccess: (response) => {
       queryClient.setQueryData(["user"], response);
+      queryClient.invalidateQueries({ queryKey: ["user"] });
       setIsLogged(true);
       navigate("/");
     },
@@ -124,7 +132,8 @@ function AuthContextWithQuery({ children }: PropsContext) {
       await axios.post(`${URL}/user/logout`, {}, { withCredentials: true });
     },
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: ["user"] });
+      queryClient.setQueryData(["user"], null);
+      queryClient.invalidateQueries({ queryKey: ["user"] });
       setIsLogged(false);
       navigate("/auth");
     },

@@ -4,7 +4,6 @@ import useFetchRecipes from "../hooks/useFetchRecipes";
 
 function Home() {
   const { data, isLoading } = useFetchRecipes();
-  console.log(data);
 
   if (isLoading) return <p>Loading...</p>;
 

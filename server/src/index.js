@@ -9,6 +9,7 @@ import connectDB from "./database/connect_db.js";
 import { usersRouter } from "./routes/users.js";
 import cookieParser from "cookie-parser";
 import { recipeRouter } from "./routes/recipe.js";
+import passport from "passport";
 import recipeControllers from "./controllers/recipeControllers.js";
 
 const app = express();
@@ -26,6 +27,9 @@ app.use(
     secret: "recipeapp",
   })
 );
+app.use(cookieParser());
+app.use(passport.initialize());
+
 app.use(
   cors({
     origin: process.env.NODE_ENV === "production" ? "" : "http://localhost:5173",
@@ -34,7 +38,6 @@ app.use(
 );
 
 app.use(sanitize());
-app.use(cookieParser());
 // generate static files:
 app.use(express.static("src/public"));
 
