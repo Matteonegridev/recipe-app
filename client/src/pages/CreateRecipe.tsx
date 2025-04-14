@@ -4,9 +4,10 @@ import Textarea from "../components/Textarea";
 import _ from "lodash";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { Types } from "mongoose";
 
 export type Recipes = {
-  id: string;
+  _id?: Types.ObjectId;
   name: string;
   ingredients: string[];
   instructions: string;
@@ -17,7 +18,6 @@ export type Recipes = {
 
 function CreateRecipe() {
   const [recipes, setRecipes] = useState<Recipes>({
-    id: "",
     name: "",
     ingredients: [],
     instructions: "",

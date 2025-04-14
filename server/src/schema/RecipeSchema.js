@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 
 const recipeSchema = new mongoose.Schema({
-  id: {
-    type: mongoose.Schema.Types.String,
-  },
   name: {
     type: mongoose.Schema.Types.String,
     required: true,

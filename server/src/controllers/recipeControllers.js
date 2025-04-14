@@ -1,6 +1,5 @@
 import Recipe from "../schema/RecipeSchema.js";
 import User from "../schema/UserModel.js";
-import uuid4 from "uuid4";
 
 const getRecipes = async (req, res) => {
   const recipes = await Recipe.find();
@@ -27,7 +26,6 @@ const createRecipes = async (req, res) => {
     }
 
     const create = new Recipe({
-      id: uuid4(),
       name,
       ingredients,
       instructions,
@@ -47,15 +45,23 @@ const createRecipes = async (req, res) => {
 
 // Save recipes into user's profile. (savedRecipe array)
 const saveRecipes = async (req, res) => {
-  const { recipeId } = req.body;
-  const fetchedRecipe = await Recipe.findById(recipeId);
-  const fetchedUser = await User.findById(req.body.username);
+  const recipeId = req.body.recipeId;
+  const userId = req.user?._id;
+  console.dir({ recipeId: recipeId, userId: userId }, { depth: null });
 
   try {
-    if (fetchedRecipe && fetchedUser) {
-      fetchedUser.savedRecipes.push(fetchedRecipe);
+    const fetchedRecipe = await Recipe.findById(recipeId);
+    const fetchedUser = await User.findById(userId);
+
+    if (!fetchedRecipe) {
+      return res.status(404).json({ message: "Recipe not found." });
     }
-    await fetchedUser.save();
+
+    // Avoid duplicate entries
+    if (!fetchedUser.savedRecipes.includes(recipeId)) {
+      fetchedUser.savedRecipes.push(recipeId);
+      await fetchedUser.save();
+    }
 
     return res.status(201).json({ message: "Recipe save successfully!" });
   } catch (error) {
@@ -66,8 +72,10 @@ const saveRecipes = async (req, res) => {
 
 // Find saved recipes of a given user:
 const fetchRecipesIds = async (req, res) => {
+  const { userId } = req.params;
   try {
-    const fetchedUser = await User.findById(User._id);
+    const fetchedUser = await User.findById(userId);
+
     return res.json({ saveRecipes: fetchedUser?.savedRecipes });
   } catch (error) {
     console.error(error);
