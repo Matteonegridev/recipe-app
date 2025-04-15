@@ -15,7 +15,7 @@ function Home() {
       {data.map((recipes: Recipes) => (
         <div key={recipes.name} className="border">
           <p>Recipe Name: {recipes.name}</p>
-          <Link to={`/recipes/${recipes._id}`}>Read More</Link>
+          <Link to={`/recipes/${recipes.slug || recipes._id}`}>Read More</Link>
         </div>
       ))}
     </div>

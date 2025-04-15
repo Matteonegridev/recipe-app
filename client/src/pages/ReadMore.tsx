@@ -3,31 +3,30 @@ import useFetchRecipes from "../hooks/useFetchRecipes";
 import { type Recipes } from "./CreateRecipe";
 import { useAuthQuery } from "../hooks/useAuthQuery";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function ReadMore() {
   const { data } = useFetchRecipes();
-  const { recipeId } = useParams();
+  const { slugId } = useParams();
   const { isLogged } = useAuthQuery();
 
   // Find the corrisponding recipe:
   const fetchOneRecipe = data?.find(
-    (recipes: Recipes) => recipes._id === recipeId,
+    (recipes: Recipes) => recipes.slug || recipes._id === slugId,
   );
 
   const saveRecipe = async () => {
     try {
-      await axios.put(
+      const res = await axios.put(
         `http://localhost:3000/recipes`,
-        {
-          recipeId,
-        },
+        { slugId },
         { withCredentials: true },
       );
-      // inserire toast?
-      alert("Recipe saved!");
+
+      toast.success(res.data.message || "Recipe saved!");
     } catch (error) {
       console.error("Error saving recipe:", error);
-      alert("Something went wrong while saving the recipe.");
+      toast.error("Something went wrong while saving the recipe.");
     }
   };
 

@@ -11,7 +11,7 @@ const getRecipes = async (req, res) => {
 };
 
 const createRecipes = async (req, res) => {
-  const { name, ingredients, instructions, imageUrl, cookingTime, userOwner } = req.body;
+  const { name, slug, ingredients, instructions, imageUrl, cookingTime, userOwner } = req.body;
 
   try {
     const user = await User.findOne({ username: userOwner });
@@ -27,6 +27,7 @@ const createRecipes = async (req, res) => {
 
     const create = new Recipe({
       name,
+      slug,
       ingredients,
       instructions,
       imageUrl,
@@ -45,12 +46,12 @@ const createRecipes = async (req, res) => {
 
 // Save recipes into user's profile. (savedRecipe array)
 const saveRecipes = async (req, res) => {
-  const recipeId = req.body.recipeId;
+  const slugId = req.body.slugId;
   const userId = req.user?._id;
-  console.dir({ recipeId: recipeId, userId: userId }, { depth: null });
+  console.dir({ recipeId: slugId, userId: userId }, { depth: null });
 
   try {
-    const fetchedRecipe = await Recipe.findById(recipeId);
+    const fetchedRecipe = await Recipe.findOne({ slug: slugId });
     const fetchedUser = await User.findById(userId);
 
     if (!fetchedRecipe) {
@@ -58,9 +59,11 @@ const saveRecipes = async (req, res) => {
     }
 
     // Avoid duplicate entries
-    if (!fetchedUser.savedRecipes.includes(recipeId)) {
-      fetchedUser.savedRecipes.push(recipeId);
+    if (!fetchedUser.savedRecipes.includes(slugId)) {
+      fetchedUser.savedRecipes.push(slugId);
       await fetchedUser.save();
+    } else {
+      return res.status(200).json({ message: "Recipe already saved." });
     }
 
     return res.status(201).json({ message: "Recipe save successfully!" });

@@ -8,6 +8,7 @@ import { Types } from "mongoose";
 
 export type Recipes = {
   _id?: Types.ObjectId;
+  slug: string;
   name: string;
   ingredients: string[];
   instructions: string;
@@ -19,6 +20,7 @@ export type Recipes = {
 function CreateRecipe() {
   const [recipes, setRecipes] = useState<Recipes>({
     name: "",
+    slug: "",
     ingredients: [],
     instructions: "",
     imageUrl: "",
