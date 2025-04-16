@@ -8,7 +8,7 @@ import { Types } from "mongoose";
 
 export type Recipes = {
   _id?: Types.ObjectId;
-  slug: string;
+  slug?: string;
   name: string;
   ingredients: string[];
   instructions: string;
@@ -20,7 +20,6 @@ export type Recipes = {
 function CreateRecipe() {
   const [recipes, setRecipes] = useState<Recipes>({
     name: "",
-    slug: "",
     ingredients: [],
     instructions: "",
     imageUrl: "",
@@ -40,6 +39,8 @@ function CreateRecipe() {
   const addIngredient = () => {
     setRecipes((prev) => ({
       ...prev,
+
+      // _.uniq con lodash permette di aggiungere solo valori non esistenti:
       ingredients: _.uniq([
         ...prev.ingredients,
         `Ingredient ${prev.ingredients.length + 1}`,
@@ -64,8 +65,6 @@ function CreateRecipe() {
     );
     setRecipes((prev) => ({ ...prev, ingredients: updateIngredient }));
   };
-
-  console.dir(recipes);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

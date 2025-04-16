@@ -7,23 +7,27 @@ import { toast } from "react-toastify";
 
 function ReadMore() {
   const { data } = useFetchRecipes();
-  const { slugId } = useParams();
+  const { recipeId } = useParams();
   const { isLogged } = useAuthQuery();
 
   // Find the corrisponding recipe:
   const fetchOneRecipe = data?.find(
-    (recipes: Recipes) => recipes.slug || recipes._id === slugId,
+    (recipes: Recipes) => recipes.slug === recipeId || recipes._id === recipeId,
   );
 
   const saveRecipe = async () => {
     try {
       const res = await axios.put(
         `http://localhost:3000/recipes`,
-        { slugId },
-        { withCredentials: true },
+        { recipeId },
+        { withCredentials: true, validateStatus: () => true },
       );
-
-      toast.success(res.data.message || "Recipe saved!");
+      console.log("Response received:", res);
+      if (res.status === 200) {
+        toast.success(res.data.message || "Recipe saved!");
+      } else if (res.status === 409) {
+        toast.error(res.data.message || "Recipe already saved!");
+      }
     } catch (error) {
       console.error("Error saving recipe:", error);
       toast.error("Something went wrong while saving the recipe.");

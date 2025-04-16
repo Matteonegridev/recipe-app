@@ -1,5 +1,6 @@
 import Recipe from "../schema/RecipeSchema.js";
 import User from "../schema/UserModel.js";
+import slugify from "slugify";
 
 const getRecipes = async (req, res) => {
   const recipes = await Recipe.find();
@@ -11,7 +12,8 @@ const getRecipes = async (req, res) => {
 };
 
 const createRecipes = async (req, res) => {
-  const { name, slug, ingredients, instructions, imageUrl, cookingTime, userOwner } = req.body;
+  const { name, ingredients, instructions, imageUrl, cookingTime, userOwner } = req.body;
+  const slug = slugify(name, { lower: true, strict: true });
 
   try {
     const user = await User.findOne({ username: userOwner });
@@ -46,27 +48,28 @@ const createRecipes = async (req, res) => {
 
 // Save recipes into user's profile. (savedRecipe array)
 const saveRecipes = async (req, res) => {
-  const slugId = req.body.slugId;
+  const { recipeId, _id } = req.body;
   const userId = req.user?._id;
-  console.dir({ recipeId: slugId, userId: userId }, { depth: null });
+  console.dir({ recipeId: recipeId, userId: userId }, { depth: null });
 
   try {
-    const fetchedRecipe = await Recipe.findOne({ slug: slugId });
+    const fetchedRecipe = await Recipe.findOne({ slug: recipeId });
     const fetchedUser = await User.findById(userId);
 
     if (!fetchedRecipe) {
       return res.status(404).json({ message: "Recipe not found." });
     }
 
-    // Avoid duplicate entries
-    if (!fetchedUser.savedRecipes.includes(slugId)) {
-      fetchedUser.savedRecipes.push(slugId);
-      await fetchedUser.save();
-    } else {
-      return res.status(200).json({ message: "Recipe already saved." });
-    }
+    const findDuplicates = fetchedUser.savedRecipes.find((savedRecipe) => savedRecipe.slug === fetchedRecipe.slug);
 
-    return res.status(201).json({ message: "Recipe save successfully!" });
+    // Avoid duplicate entries
+    if (!findDuplicates) {
+      fetchedUser.savedRecipes.push({ _id: fetchedRecipe._id, slug: fetchedRecipe.slug });
+      await fetchedUser.save();
+      return res.status(200).json({ message: "Recipe saved successfully!" });
+    } else {
+      return res.status(409).json({ message: "Recipe already saved." });
+    }
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
     throw new Error(error);

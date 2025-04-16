@@ -2,19 +2,22 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   username: {
-    type: mongoose.Schema.Types.String,
+    type: String,
     required: true,
     unique: true,
   },
   password: {
-    type: mongoose.Schema.Types.String,
+    type: String,
     required: true,
     unique: true,
   },
   savedRecipes: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Recipe",
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Recipe",
+      },
+      slug: String,
     },
   ],
 });
