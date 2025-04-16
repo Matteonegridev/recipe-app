@@ -22,7 +22,7 @@ function ReadMore() {
         { recipeId },
         { withCredentials: true, validateStatus: () => true },
       );
-      console.log("Response received:", res);
+      console.log("Response received:", res, recipeId);
       if (res.status === 200) {
         toast.success(res.data.message || "Recipe saved!");
       } else if (res.status === 409) {

@@ -80,9 +80,9 @@ const saveRecipes = async (req, res) => {
 const fetchRecipesIds = async (req, res) => {
   const { userId } = req.params;
   try {
-    const fetchedUser = await User.findById(userId);
+    const fetchedUser = await User.findOne({ username: userId });
 
-    return res.json({ saveRecipes: fetchedUser?.savedRecipes });
+    return res.json({ savedRecipes: fetchedUser?.savedRecipes });
   } catch (error) {
     console.error(error);
   }
