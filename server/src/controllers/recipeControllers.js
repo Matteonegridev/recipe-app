@@ -48,7 +48,7 @@ const createRecipes = async (req, res) => {
 
 // Save recipes into user's profile. (savedRecipe array)
 const saveRecipes = async (req, res) => {
-  const { recipeId, _id } = req.body;
+  const { recipeId } = req.body;
   const userId = req.user?._id;
   console.dir({ recipeId: recipeId, userId: userId }, { depth: null });
 
@@ -79,6 +79,7 @@ const saveRecipes = async (req, res) => {
 // Find saved recipes of a given user:
 const fetchRecipesIds = async (req, res) => {
   const { userId } = req.params;
+
   try {
     const fetchedUser = await User.findOne({ username: userId });
 

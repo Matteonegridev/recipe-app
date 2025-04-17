@@ -5,6 +5,9 @@ import { useAuthQuery } from "../hooks/useAuthQuery";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+// import BookmarkIcon from "@mui/icons-material/Bookmark";
+// import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
+
 function ReadMore() {
   const { data } = useFetchRecipes();
   const { recipeId } = useParams();
@@ -22,6 +25,7 @@ function ReadMore() {
         { recipeId },
         { withCredentials: true, validateStatus: () => true },
       );
+
       console.log("Response received:", res, recipeId);
       if (res.status === 200) {
         toast.success(res.data.message || "Recipe saved!");
@@ -42,11 +46,8 @@ function ReadMore() {
           <p>{fetchOneRecipe.instructions}</p>
           <p>{fetchOneRecipe.cookingTime}</p>
           {isLogged && (
-            <button
-              onClick={saveRecipe}
-              className="cursor-pointer bg-amber-200"
-            >
-              Save Recipe
+            <button onClick={saveRecipe} className="cursor-pointer">
+              save
             </button>
           )}
         </div>

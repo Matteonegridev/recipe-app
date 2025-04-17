@@ -19,7 +19,7 @@ type User = {
 type Credentials = {
   id: string;
   username: string;
-  // savedRecipes: { _id: string; slug: string }[];
+  savedRecipes: { _id: string; slug: string }[];
 };
 
 export type ContextAuthType = {
