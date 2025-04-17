@@ -22,10 +22,26 @@ const saveRecipes = async (recipeId: string) => {
   }
 };
 
-function useSaveRecipe() {
+function useSaveRecipe(username: string) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (recipeId: string) => saveRecipes(recipeId),
+    mutationKey: ["saved-recipes"],
+    onMutate: async (recipeId) => {
+      await queryClient.cancelQueries({
+        queryKey: ["saved-recipes", username],
+      });
+
+      const previousQuery = queryClient.getQueryData(["saved-recipes"]);
+      queryClient.setQueryData(
+        ["saved-recipes", username],
+        (oldData: string) => [...oldData, recipeId],
+      );
+      return { previousQuery };
+    },
+    onError: (err, recipeId, context) => {
+      queryClient.setQueryData(["saved-recipes"], context?.previousQuery);
+    },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["saved-recipes"] });
     },

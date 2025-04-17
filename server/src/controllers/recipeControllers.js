@@ -50,29 +50,43 @@ const createRecipes = async (req, res) => {
 const saveRecipes = async (req, res) => {
   const { recipeId } = req.body;
   const userId = req.user?._id;
-  console.dir({ recipeId: recipeId, userId: userId }, { depth: null });
 
   try {
+    // Find Recipe:
     const fetchedRecipe = await Recipe.findOne({ slug: recipeId });
-    const fetchedUser = await User.findById(userId);
-
     if (!fetchedRecipe) {
       return res.status(404).json({ message: "Recipe not found." });
     }
 
-    const findDuplicates = fetchedUser.savedRecipes.find((savedRecipe) => savedRecipe.slug === fetchedRecipe.slug);
-
-    // Avoid duplicate entries
-    if (!findDuplicates) {
-      fetchedUser.savedRecipes.push({ _id: fetchedRecipe._id, slug: fetchedRecipe.slug });
-      await fetchedUser.save();
-      res.status(200).json({ message: "Recipe saved successfully!", savedRecipe: fetchedUser.savedRecipes });
-    } else {
-      return res.status(409).json({ message: "Recipe already saved." });
+    // Find User:
+    const fetchedUser = await User.findById(userId);
+    if (!fetchedUser) {
+      return res.status(404).json({ message: "User not found." });
     }
+
+    // Check if recipe is already saved:
+    const isAlreadySaved = fetchedUser.savedRecipes.some((recipe) => recipe?.slug === fetchedRecipe.slug);
+
+    // Unsave if already saved:
+    if (isAlreadySaved) {
+      // UNSAVE
+      fetchedUser.savedRecipes = fetchedUser.savedRecipes.filter((r) => r?.slug !== fetchedRecipe.slug);
+    } else {
+      // SAVE
+      fetchedUser.savedRecipes.push({
+        _id: fetchedRecipe._id,
+        slug: fetchedRecipe.slug,
+      });
+    }
+
+    await fetchedUser.save();
+
+    return res.status(200).json({
+      message: isAlreadySaved ? "Recipe unsaved!" : "Recipe saved!",
+    });
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
-    throw new Error(error);
+    console.error("Save error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 

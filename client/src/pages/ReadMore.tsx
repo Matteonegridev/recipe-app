@@ -2,17 +2,21 @@ import { useParams } from "react-router";
 import useFetchRecipes from "../hooks/useFetchRecipes";
 import { type Recipes } from "./CreateRecipe";
 import { useAuthQuery } from "../hooks/useAuthQuery";
-// import BookmarkIcon from "@mui/icons-material/Bookmark";
-// import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
 import useSaveRecipe from "../hooks/useSaveRecipe";
 import useUserSavedRecipes from "../hooks/useUserSavedRecipes";
 
 function ReadMore() {
+  // fetch del recipe:
   const { data: recipeData } = useFetchRecipes();
+  // creazione del params:
   const { recipeId } = useParams();
+  // dati relativi all'utente:
   const { isLogged, data: userData } = useAuthQuery();
-
-  const { mutate: saveRecipe } = useSaveRecipe();
+  // dati della mutation:
+  const { mutate: saveRecipe } = useSaveRecipe(userData?.username || "");
+  // fetch recipes salvati dell'utente considerato:
   const { data: savedRecipes = [] } = useUserSavedRecipes(
     userData?.username || "",
   );
@@ -40,9 +44,16 @@ function ReadMore() {
           {isLogged && (
             <button
               onClick={() => saveRecipe(fetchOneRecipe.slug)}
-              className="cursor-pointer"
+              className="cursor-pointer transition-transform duration-200 hover:scale-110"
             >
-              {isSaved ? "Saved ✅" : "Save"}
+              {isSaved ? (
+                <BookmarkIcon fontSize="large" className="text-yellow-500" />
+              ) : (
+                <BookmarkOutlinedIcon
+                  fontSize="large"
+                  className="text-gray-500"
+                />
+              )}
             </button>
           )}
         </div>
