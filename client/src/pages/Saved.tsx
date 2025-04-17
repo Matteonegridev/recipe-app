@@ -3,15 +3,12 @@ import { useEffect, useState } from "react";
 import { useAuthQuery } from "../hooks/useAuthQuery";
 import { Link } from "react-router";
 
-type Recipe = {
-  _id: string;
-  slug?: string;
-};
-
 function Saved() {
   const { data } = useAuthQuery();
 
-  const [savedRecipes, setSavedRecipes] = useState<Recipe[]>([]);
+  const [savedRecipes, setSavedRecipes] = useState<
+    { _id: string; slug: string }[]
+  >([]);
 
   console.log("data:", data);
 

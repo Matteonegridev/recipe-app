@@ -11,8 +11,8 @@ router.get("/profile", passport.authenticate("jwt", { session: false }), (req, r
   if (!req.user) {
     return res.status(401).json({ message: "Unauthorized: No user found in JWT" });
   }
-  const { username } = req.user;
-  res.json({ username });
+  const { username, savedRecipes } = req.user;
+  res.json({ username, savedRecipes });
 });
 router.post("/logout", passport.authenticate("jwt", { session: false }), usersControllers.logoutUser);
 

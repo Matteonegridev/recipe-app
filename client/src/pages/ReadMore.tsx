@@ -2,41 +2,33 @@ import { useParams } from "react-router";
 import useFetchRecipes from "../hooks/useFetchRecipes";
 import { type Recipes } from "./CreateRecipe";
 import { useAuthQuery } from "../hooks/useAuthQuery";
-import axios from "axios";
-import { toast } from "react-toastify";
-
 // import BookmarkIcon from "@mui/icons-material/Bookmark";
 // import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
+import useSaveRecipe from "../hooks/useSaveRecipe";
+import useUserSavedRecipes from "../hooks/useUserSavedRecipes";
 
 function ReadMore() {
-  const { data } = useFetchRecipes();
+  const { data: recipeData } = useFetchRecipes();
   const { recipeId } = useParams();
-  const { isLogged } = useAuthQuery();
+  const { isLogged, data: userData } = useAuthQuery();
 
-  // Find the corrisponding recipe:
-  const fetchOneRecipe = data?.find(
+  const { mutate: saveRecipe } = useSaveRecipe();
+  const { data: savedRecipes = [] } = useUserSavedRecipes(
+    userData?.username || "",
+  );
+
+  // Find the corrisponding recipe to the recipeId params we navigate to:
+  const fetchOneRecipe = recipeData?.find(
     (recipes: Recipes) => recipes.slug === recipeId || recipes._id === recipeId,
   );
 
-  const saveRecipe = async () => {
-    try {
-      const res = await axios.put(
-        `http://localhost:3000/recipes`,
-        { recipeId },
-        { withCredentials: true, validateStatus: () => true },
-      );
+  const isSaved = savedRecipes.includes(recipeId);
 
-      console.log("Response received:", res, recipeId);
-      if (res.status === 200) {
-        toast.success(res.data.message || "Recipe saved!");
-      } else if (res.status === 409) {
-        toast.error(res.data.message || "Recipe already saved!");
-      }
-    } catch (error) {
-      console.error("Error saving recipe:", error);
-      toast.error("Something went wrong while saving the recipe.");
-    }
-  };
+  console.log("DATA:", recipeData);
+  console.log("recipe ID:", recipeId);
+  console.log("online?", isLogged);
+  console.log("user?", userData, userData?.savedRecipes);
+  console.log("fetch One Recipe:", fetchOneRecipe);
 
   return (
     <div>
@@ -46,8 +38,11 @@ function ReadMore() {
           <p>{fetchOneRecipe.instructions}</p>
           <p>{fetchOneRecipe.cookingTime}</p>
           {isLogged && (
-            <button onClick={saveRecipe} className="cursor-pointer">
-              save
+            <button
+              onClick={() => saveRecipe(fetchOneRecipe.slug)}
+              className="cursor-pointer"
+            >
+              {isSaved ? "Saved ✅" : "Save"}
             </button>
           )}
         </div>

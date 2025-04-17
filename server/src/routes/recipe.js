@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post("/create", passport.authenticate("jwt", { session: false }), recipeControllers.createRecipes);
 router.get("/:userId", recipeControllers.fetchRecipesIds);
+router.get("/saved/:username", recipeControllers.checkUserSavedRecipes);
 router.put("/", passport.authenticate("jwt", { session: false }), recipeControllers.saveRecipes);
 
 export { router as recipeRouter };

@@ -66,7 +66,7 @@ const saveRecipes = async (req, res) => {
     if (!findDuplicates) {
       fetchedUser.savedRecipes.push({ _id: fetchedRecipe._id, slug: fetchedRecipe.slug });
       await fetchedUser.save();
-      return res.status(200).json({ message: "Recipe saved successfully!" });
+      res.status(200).json({ message: "Recipe saved successfully!", savedRecipe: fetchedUser.savedRecipes });
     } else {
       return res.status(409).json({ message: "Recipe already saved." });
     }
@@ -76,7 +76,22 @@ const saveRecipes = async (req, res) => {
   }
 };
 
-// Find saved recipes of a given user:
+// This function is important to return only the recipes saved by user:
+const checkUserSavedRecipes = async (req, res) => {
+  const { username } = req.params;
+  try {
+    const checkUser = await User.findOne({ username: username });
+
+    if (checkUser) {
+      return res.status(200).json({ savedRecipes: checkUser?.savedRecipes.map((recipe) => recipe.slug) });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+// Find saved recipes of a given user: (Save Section)
 const fetchRecipesIds = async (req, res) => {
   const { userId } = req.params;
 
@@ -89,4 +104,4 @@ const fetchRecipesIds = async (req, res) => {
   }
 };
 
-export default { getRecipes, createRecipes, saveRecipes, fetchRecipesIds };
+export default { getRecipes, createRecipes, saveRecipes, fetchRecipesIds, checkUserSavedRecipes };
