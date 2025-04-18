@@ -11,10 +11,15 @@ import cookieParser from "cookie-parser";
 import { recipeRouter } from "./routes/recipe.js";
 import passport from "passport";
 import recipeControllers from "./controllers/recipeControllers.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 const mongoUri = process.env.MONGO_URI;
 const port = process.env.PORT || 5000;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 connectDB(mongoUri);
 
@@ -39,7 +44,7 @@ app.use(
 
 app.use(sanitize());
 // generate static files:
-app.use(express.static("src/public"));
+app.use("/images", express.static(path.join(__dirname, "public", "images")));
 
 //Home:
 app.get("/home", recipeControllers.getRecipes);

@@ -5,9 +5,9 @@ function Navbar() {
   const { logout, isLogged } = useAuthQuery();
 
   return (
-    <header className="w-full">
+    <header className="bg-primary-green w-full shadow-lg">
       <nav className="m-[0_auto] w-3/4 py-4">
-        <ul className="flex gap-16 [&>*]:text-2xl [&>*]:font-semibold [&>*]:uppercase">
+        <ul className="text-primary-accent-1 flex justify-between gap-16 [&>*]:text-2xl [&>*]:font-medium [&>*]:uppercase">
           <li>
             <Link to={"/"}>Home</Link>
           </li>
@@ -23,7 +23,7 @@ function Navbar() {
           {isLogged && (
             <button
               onClick={logout}
-              className="ml-auto cursor-pointer bg-amber-300 px-4 py-1"
+              className="cursor-pointer bg-amber-300 px-4 py-1"
             >
               Logout
             </button>

@@ -5,6 +5,9 @@ import _ from "lodash";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { Types } from "mongoose";
+import validateRecipeSchema, {
+  RecipeValidation,
+} from "../schema/validateRecipe";
 
 export type Recipes = {
   _id?: Types.ObjectId;
@@ -12,34 +15,49 @@ export type Recipes = {
   name: string;
   ingredients: string[];
   instructions: string;
-  imageUrl: string;
+  imageUrl: File | null;
   cookingTime: number;
   userOwner: string;
 };
 
 function CreateRecipe() {
-  const [recipes, setRecipes] = useState<Recipes>({
+  const [recipes, setRecipes] = useState<
+    Omit<RecipeValidation, "imageUrl"> & { imageUrl: File | null }
+  >({
     name: "",
     ingredients: [],
     instructions: "",
-    imageUrl: "",
+    imageUrl: null,
     cookingTime: 0,
     userOwner: "",
   });
+  const [fieldError, setFieldError] = useState<{
+    name?: string;
+    ingredients?: string[];
+    instructions?: string;
+    imageUrl?: null;
+    cookingTime?: number;
+    userOwner?: string;
+  }>({});
   const navigate = useNavigate();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value } = e.target;
-    setRecipes((prev) => ({ ...prev, [name]: value }));
+    const { name, value, files } = e.target as HTMLInputElement;
+    if (name === "imageUrl" && files) {
+      setRecipes((prev) => ({ ...prev, [name]: files[0] }));
+    } else if (name === "cookingTime") {
+      setRecipes((prev) => ({ ...prev, cookingTime: parseInt(value) }));
+    } else {
+      setRecipes((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   // Aggiungi ingredient con Lodash:
   const addIngredient = () => {
     setRecipes((prev) => ({
       ...prev,
-
       // _.uniq con lodash permette di aggiungere solo valori non esistenti:
       ingredients: _.uniq([
         ...prev.ingredients,
@@ -54,7 +72,7 @@ function CreateRecipe() {
     setRecipes((prev) => ({ ...prev, ingredients: removedIngredient }));
   };
 
-  // Consenti al field di essere modificato:
+  // Consenti al field ingredient di essere modificato:
   const handleChangeAddedIngredient = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
@@ -69,21 +87,39 @@ function CreateRecipe() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/recipes/create",
-        { ...recipes },
-        {
-          headers: {
-            "Content-Type": "application/json",
+    const validationResult = validateRecipeSchema.safeParse(recipes);
+
+    if (validationResult.success) {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/recipes/create",
+          { ...recipes },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            withCredentials: true,
           },
-          withCredentials: true,
-        },
-      );
-      navigate("/");
-      console.log(response.data);
-    } catch (err) {
-      throw new Error(err instanceof Error ? err.message : String(err));
+        );
+        navigate("/");
+        console.log(response.data);
+      } catch (err) {
+        throw new Error(err instanceof Error ? err.message : String(err));
+      }
+    } else {
+      const errors = validationResult.error.flatten();
+      console.log("Errori recipes:", errors);
+      setFieldError({
+        name: errors.fieldErrors.name?.[0],
+        ingredients: errors.fieldErrors.ingredients,
+        instructions: errors.fieldErrors.instructions?.[0],
+        imageUrl:
+          (errors.fieldErrors.imageUrl?.[0] as null | undefined) ?? null,
+        cookingTime: errors.fieldErrors.cookingTime?.[0]
+          ? parseInt(errors.fieldErrors.cookingTime[0], 10)
+          : undefined,
+        userOwner: errors.fieldErrors.userOwner?.[0],
+      });
     }
   };
 
@@ -93,76 +129,106 @@ function CreateRecipe() {
       <main>
         <form
           onSubmit={handleSubmit}
-          className="m-auto flex w-3/4 flex-col space-y-2 p-3 shadow-lg"
+          encType="multipart/form-data"
+          className="m-auto flex w-3/4 flex-col space-y-5 p-3 shadow-lg"
         >
-          <Input
-            label="Name"
-            type="text"
-            id="name"
-            name="name"
-            value={recipes.name}
-            onChange={handleChange}
-          />
-          {recipes.ingredients.map((ingredient, index) => (
-            <div key={index} className="flex items-center gap-4">
-              <Input
-                label={`Ingredient ${index + 1}`}
-                type="text"
-                id="ingredients"
-                name="ingredients"
-                value={ingredient}
-                className="w-[25rem] border px-1 py-1.5"
-                onChange={(e) => handleChangeAddedIngredient(e, index)}
-              />
-              <button
-                className="ml-auto cursor-pointer bg-red-500 px-3 py-2 text-white"
-                type="button"
-                onClick={() => removeIngredient(index)}
-              >
-                X
-              </button>
-            </div>
-          ))}
-
-          <button
-            type="button"
-            onClick={addIngredient}
-            className="cursor-pointer bg-amber-200"
-          >
-            Add Ingredient
-          </button>
-
-          <Textarea
-            label="Instructions"
-            id="instructions"
-            name="instructions"
-            value={recipes.instructions}
-            onChange={handleChange}
-          />
-          <Input
-            label="Select an Image"
-            type="text"
-            id="imageUrl"
-            name="imageUrl"
-            value={recipes.imageUrl}
-            onChange={handleChange}
-          />
-          <Input
-            label="Cooking time"
-            type="number"
-            id="cookingTime"
-            name="cookingTime"
-            value={recipes.cookingTime}
-            onChange={handleChange}
-          />
-          <Input
-            label="Owner"
-            type="text"
-            id="userOwner"
-            name="userOwner"
-            value={recipes.userOwner}
-            onChange={handleChange}
-          />
+          <div>
+            <Input
+              placeholder="Recipe's name"
+              label="Name"
+              type="text"
+              id="name"
+              name="name"
+              value={recipes.name}
+              onChange={handleChange}
+            />
+            {fieldError.name && (
+              <p className="text-xs text-red-500">{fieldError.name}</p>
+            )}
+          </div>
+          <div className="flex flex-col space-y-5">
+            {recipes.ingredients.map((ingredient, index) => (
+              <div key={index} className="flex items-center gap-4">
+                <Input
+                  placeholder={`Ingredient`}
+                  label={`Ingredient ${index + 1}`}
+                  type="text"
+                  id="ingredients"
+                  name="ingredients"
+                  value={ingredient}
+                  className="w-[25rem] rounded-md border px-1 py-2"
+                  onChange={(e) => handleChangeAddedIngredient(e, index)}
+                />
+                <button
+                  className="ml-auto cursor-pointer bg-red-500 px-3 py-2 text-white"
+                  type="button"
+                  onClick={() => removeIngredient(index)}
+                >
+                  X
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addIngredient}
+              className="text-mg cursor-pointer rounded-md bg-amber-200 py-2 font-bold shadow-md"
+            >
+              Add Ingredient
+            </button>
+          </div>
+          <div>
+            <Textarea
+              placeholder="Mix it, cook it, eat it."
+              label="Instructions"
+              id="instructions"
+              name="instructions"
+              value={recipes.instructions}
+              onChange={handleChange}
+            />
+            {fieldError.instructions && (
+              <p className="text-xs text-red-500">{fieldError.instructions}</p>
+            )}
+          </div>
+          <div>
+            <Input
+              label="Select an Image"
+              type="file"
+              id="imageUrl"
+              name="imageUrl"
+              accept="image/jpeg, image/jpg"
+              onChange={handleChange}
+            />
+            {fieldError.imageUrl && (
+              <p className="text-xs text-red-500">{fieldError.imageUrl}</p>
+            )}
+          </div>
+          <div>
+            <Input
+              label="Cooking time"
+              type="number"
+              id="cookingTime"
+              name="cookingTime"
+              value={recipes.cookingTime}
+              onChange={handleChange}
+            />
+            {fieldError.cookingTime && (
+              <p className="text-xs text-red-500">{fieldError.cookingTime}</p>
+            )}
+          </div>
+          <div>
+            <Input
+              placeholder="creator"
+              label="Owner"
+              type="text"
+              id="userOwner"
+              name="userOwner"
+              value={recipes.userOwner}
+              onChange={handleChange}
+            />
+            {fieldError.userOwner && (
+              <p className="text-xs text-red-500">{fieldError.userOwner}</p>
+            )}
+          </div>
           <button className="cursor-pointer bg-gray-300" type="submit">
             Add Recipe
           </button>

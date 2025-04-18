@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary-green: #347c13;
+  --color-secondary-sandyBrown: #f0a868;
+  --color-primary-accent-1: #e4ffe1;
+  --color-primary-accent-2: #f4fdd9;
+  --color-secondary-accent-1: #ffe8c2;
+}
+
+html {
+  font-family: Arial, Helvetica, sans-serif;
+}

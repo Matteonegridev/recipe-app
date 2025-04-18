@@ -10,8 +10,16 @@ type InputProps = ComponentProps<"input"> & {
 function Input({ type, id, name, label, ...rest }: InputProps) {
   return (
     <>
-      <label htmlFor={name}> {label}</label>
-      <input className="border" type={type} id={id} name={name} {...rest} />
+      <label className="text-lg" htmlFor={name}>
+        {label}
+      </label>
+      <input
+        className="mt-1 w-full rounded-md border px-1 py-2"
+        type={type}
+        id={id}
+        name={name}
+        {...rest}
+      />
     </>
   );
 }

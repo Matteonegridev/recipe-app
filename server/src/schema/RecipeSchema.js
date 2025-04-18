@@ -19,7 +19,7 @@ const recipeSchema = new mongoose.Schema({
   },
   imageUrl: {
     type: mongoose.Schema.Types.String,
-    required: true,
+    // required: true,
   },
   cookingTime: {
     type: mongoose.Schema.Types.Number,

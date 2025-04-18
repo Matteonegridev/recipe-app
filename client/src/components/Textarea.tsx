@@ -9,8 +9,16 @@ type TextareaProps = ComponentProps<"textarea"> & {
 function Textarea({ id, name, label, ...rest }: TextareaProps) {
   return (
     <>
-      <label htmlFor={name}> {label}</label>
-      <textarea className="border" id={id} name={name} {...rest} />
+      <label className="text-lg" htmlFor={name}>
+        {" "}
+        {label}
+      </label>
+      <textarea
+        className="mt-1 w-full rounded-md border px-1 py-2"
+        id={id}
+        name={name}
+        {...rest}
+      />
     </>
   );
 }

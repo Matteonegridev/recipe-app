@@ -12,7 +12,12 @@ const getRecipes = async (req, res) => {
 };
 
 const createRecipes = async (req, res) => {
-  const { name, ingredients, instructions, imageUrl, cookingTime, userOwner } = req.body;
+  const { name, ingredients, instructions, cookingTime, userOwner } = req.body;
+  // Use req.file for uploaded image
+  let imageUrl = null;
+  if (req.file) {
+    imageUrl = `/images/${req.file.filename}`;
+  }
   const slug = slugify(name, { lower: true, strict: true });
 
   try {
@@ -32,39 +37,39 @@ const createRecipes = async (req, res) => {
       slug,
       ingredients,
       instructions,
-      imageUrl,
+      imageUrl: imageUrl,
       cookingTime,
       userOwner: user._id,
     });
     const saveRecipe = await create.save();
     console.log(saveRecipe);
 
-    return res.status(201).json({ message: "Recipe successfully created!" });
+    return res.status(201).json({ message: "Recipe successfully created!", imageUrl: imageUrl });
   } catch (error) {
     console.error("Error creating recipe:", error);
     return res.status(500).json({ message: "Internal server error." });
   }
 };
 
-// Save recipes into user's profile. (savedRecipe array)
+// Save / unsave recipes into user's profile. (savedRecipe array)
 const saveRecipes = async (req, res) => {
   const { recipeId } = req.body;
   const userId = req.user?._id;
 
   try {
-    // Find Recipe:
+    // Find Recipe by slug:
     const fetchedRecipe = await Recipe.findOne({ slug: recipeId });
     if (!fetchedRecipe) {
       return res.status(404).json({ message: "Recipe not found." });
     }
 
-    // Find User:
+    // Find User by id:
     const fetchedUser = await User.findById(userId);
     if (!fetchedUser) {
       return res.status(404).json({ message: "User not found." });
     }
 
-    // Check if recipe is already saved:
+    // Check if recipe is already saved, we use some because we only want a yes/no answer:
     const isAlreadySaved = fetchedUser.savedRecipes.some((recipe) => recipe?.slug === fetchedRecipe.slug);
 
     // Unsave if already saved:
@@ -80,7 +85,7 @@ const saveRecipes = async (req, res) => {
     }
 
     await fetchedUser.save();
-
+    console.log("Uploaded image:", req.file);
     return res.status(200).json({
       message: isAlreadySaved ? "Recipe unsaved!" : "Recipe saved!",
     });

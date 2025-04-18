@@ -28,11 +28,11 @@ function ReadMore() {
 
   const isSaved = savedRecipes.includes(recipeId);
 
-  console.log("DATA:", recipeData);
-  console.log("recipe ID:", recipeId);
-  console.log("online?", isLogged);
-  console.log("user?", userData, userData?.savedRecipes);
-  console.log("fetch One Recipe:", fetchOneRecipe);
+  // console.log("DATA:", recipeData);
+  // console.log("recipe ID:", recipeId);
+  // console.log("online?", isLogged);
+  // console.log("user?", userData, userData?.savedRecipes);
+  // console.log("fetch One Recipe:", fetchOneRecipe);
 
   return (
     <div>
