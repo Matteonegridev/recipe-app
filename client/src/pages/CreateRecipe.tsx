@@ -35,8 +35,8 @@ function CreateRecipe() {
     name?: string;
     ingredients?: string[];
     instructions?: string;
-    imageUrl?: null;
-    cookingTime?: number;
+    imageUrl?: string;
+    cookingTime?: string;
     userOwner?: string;
   }>({});
   const navigate = useNavigate();
@@ -113,11 +113,8 @@ function CreateRecipe() {
         name: errors.fieldErrors.name?.[0],
         ingredients: errors.fieldErrors.ingredients,
         instructions: errors.fieldErrors.instructions?.[0],
-        imageUrl:
-          (errors.fieldErrors.imageUrl?.[0] as null | undefined) ?? null,
-        cookingTime: errors.fieldErrors.cookingTime?.[0]
-          ? parseInt(errors.fieldErrors.cookingTime[0], 10)
-          : undefined,
+        imageUrl: errors.fieldErrors.imageUrl?.[0],
+        cookingTime: errors.fieldErrors.cookingTime?.[0],
         userOwner: errors.fieldErrors.userOwner?.[0],
       });
     }

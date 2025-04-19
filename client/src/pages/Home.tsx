@@ -17,7 +17,7 @@ function Home() {
           <img
             src={`http://localhost:3000${recipes.imageUrl}`}
             alt="Recipe Image"
-            style={{ maxWidth: "300px", maxHeight: "200px" }}
+            style={{ maxWidth: "300px", height: "auto" }}
           />
 
           <p>Recipe Name: {recipes.name}</p>

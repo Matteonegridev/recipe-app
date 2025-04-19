@@ -10,7 +10,8 @@ const validateRecipeSchema = z.object({
     .union([z.instanceof(File), z.null()])
     .refine(
       (file) => {
-        if (!file) return true; // skip if null
+        // skip if null
+        if (!file) return true;
         return ["image/jpg", "image/jpeg"].includes(file.type);
       },
       {
@@ -19,7 +20,8 @@ const validateRecipeSchema = z.object({
     )
     .refine(
       (file) => {
-        if (!file) return true; // skip if null
+        // skip if null
+        if (!file) return true;
         return file.size <= fileSizeLimit;
       },
       {
@@ -28,7 +30,7 @@ const validateRecipeSchema = z.object({
     ),
   cookingTime: z
     .number({
-      required_error: "Field Required",
+      message: "Insert a number",
     })
     .positive(),
   userOwner: z.string(),

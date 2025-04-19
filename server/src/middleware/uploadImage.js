@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const filePath = path.join(__dirname, "../public/images");
 
+// Create folder if it doesn't exist:
 if (!fs.existsSync(filePath)) {
   fs.mkdirSync(filePath, { recursive: true });
 }
@@ -18,9 +19,8 @@ const storage = multer.diskStorage({
     cb(null, filePath);
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
+    const date = Date.now();
+    cb(null, `${date}-${file.originalname}`);
   },
 });
 
