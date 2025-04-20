@@ -13,7 +13,7 @@ import ModalRecipe from "./pages/ModalRecipe";
 
 function App() {
   return (
-    <div>
+    <div className="">
       <BrowserRouter>
         <ReactQueryContext>
           <Routes>

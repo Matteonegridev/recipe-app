@@ -1,5 +1,4 @@
-import { Link } from "react-router";
-import { type Recipes } from "./CreateRecipe";
+import Card from "../components/Card";
 import useFetchRecipes from "../hooks/useFetchRecipes";
 
 function Home() {
@@ -10,20 +9,11 @@ function Home() {
   if (!data) return <p>No data available</p>;
 
   return (
-    <div>
-      <h1>Explore Recipes:</h1>
-      {data.map((recipes: Recipes) => (
-        <div key={recipes.name} className="border">
-          <img
-            src={`http://localhost:3000${recipes.imageUrl}`}
-            alt="Recipe Image"
-            style={{ maxWidth: "300px", height: "auto" }}
-          />
-
-          <p>Recipe Name: {recipes.name}</p>
-          <Link to={`/recipes/${recipes?.slug || recipes._id}`}>Read More</Link>
-        </div>
-      ))}
+    <div className="px-8 py-5">
+      <h1 className="py-4 text-center text-4xl font-bold">Explore Recipes:</h1>
+      <div className="grid grid-cols-3 gap-4">
+        <Card data={data} />
+      </div>
     </div>
   );
 }

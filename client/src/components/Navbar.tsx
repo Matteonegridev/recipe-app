@@ -6,7 +6,7 @@ function Navbar() {
 
   return (
     <header className="bg-primary-green w-full shadow-lg">
-      <nav className="m-[0_auto] w-3/4 py-4">
+      <nav className="m-[0_auto] w-3/4 py-6">
         <ul className="text-primary-accent-1 flex justify-between gap-16 [&>*]:text-2xl [&>*]:font-medium [&>*]:uppercase">
           <li>
             <Link to={"/"}>Home</Link>
