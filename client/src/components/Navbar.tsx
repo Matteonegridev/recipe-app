@@ -61,7 +61,7 @@ function Navbar() {
           {isLogged && (
             <button
               onClick={logout}
-              className="bg-secondary-accent-1 w-[8rem] cursor-pointer rounded-lg py-2 text-xl font-bold"
+              className="bg-secondary-sandyBrown w-[8rem] cursor-pointer rounded-lg py-2 text-xl font-bold text-white"
             >
               Logout
             </button>

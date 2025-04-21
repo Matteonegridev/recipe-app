@@ -121,34 +121,32 @@ function CreateRecipe() {
   };
 
   return (
-    <div className="mt-20 py-10">
-      <h2 className="font-header mt-10 text-center text-5xl font-bold">
-        Create Recipes
+    <div className="bg-primary-accent-1 mt-20 py-10">
+      <h2 className="font-header mt-10 text-center text-5xl font-bold text-gray-600">
+        Create a recipe!
       </h2>
       <main className="mt-15">
         <form
           onSubmit={handleSubmit}
           encType="multipart/form-data"
-          className="m-auto flex w-3/4 flex-col space-y-5 p-3 shadow-lg"
+          className="m-auto flex w-2xl flex-col items-center space-y-5 rounded-lg bg-white py-8 shadow-xl"
         >
-          <div>
-            <Input
-              placeholder="Recipe's name"
-              label="Name"
-              type="text"
-              id="name"
-              name="name"
-              value={recipes.name}
-              onChange={handleChange}
-            />
-            {fieldError.name && (
-              <p className="text-xs text-red-500">{fieldError.name}</p>
-            )}
-          </div>
-          <div className="flex flex-col space-y-5">
+          <Input
+            error={fieldError.name}
+            placeholder="Recipe's name"
+            label="Name"
+            type="text"
+            id="name"
+            name="name"
+            value={recipes.name}
+            onChange={handleChange}
+          />
+
+          <div className="w-[35rem]">
             {recipes.ingredients.map((ingredient, index) => (
-              <div key={index} className="flex items-center gap-4">
+              <div key={index} className="flex justify-between space-y-3">
                 <Input
+                  error={fieldError.ingredients}
                   placeholder={`Ingredient`}
                   label={`Ingredient ${index + 1}`}
                   type="text"
@@ -159,7 +157,7 @@ function CreateRecipe() {
                   onChange={(e) => handleChangeAddedIngredient(e, index)}
                 />
                 <button
-                  className="ml-auto cursor-pointer bg-red-500 px-3 py-2 text-white"
+                  className="flex h-11 w-11 cursor-pointer items-center justify-center self-end rounded-full bg-red-400 text-xl font-bold text-white"
                   type="button"
                   onClick={() => removeIngredient(index)}
                 >
@@ -167,68 +165,59 @@ function CreateRecipe() {
                 </button>
               </div>
             ))}
-            <button
-              type="button"
-              onClick={addIngredient}
-              className="text-mg cursor-pointer rounded-md bg-amber-200 py-2 font-bold shadow-md"
-            >
-              Add Ingredient
-            </button>
           </div>
-          <div>
-            <Textarea
-              placeholder="Mix it, cook it, eat it."
-              label="Instructions"
-              id="instructions"
-              name="instructions"
-              value={recipes.instructions}
-              onChange={handleChange}
-            />
-            {fieldError.instructions && (
-              <p className="text-xs text-red-500">{fieldError.instructions}</p>
-            )}
-          </div>
-          <div>
-            <Input
-              label="Select an Image"
-              type="file"
-              id="imageUrl"
-              name="imageUrl"
-              accept="image/jpeg, image/jpg"
-              onChange={handleChange}
-            />
-            {fieldError.imageUrl && (
-              <p className="text-xs text-red-500">{fieldError.imageUrl}</p>
-            )}
-          </div>
-          <div>
-            <Input
-              label="Cooking time"
-              type="number"
-              id="cookingTime"
-              name="cookingTime"
-              value={recipes.cookingTime}
-              onChange={handleChange}
-            />
-            {fieldError.cookingTime && (
-              <p className="text-xs text-red-500">{fieldError.cookingTime}</p>
-            )}
-          </div>
-          <div>
-            <Input
-              placeholder="creator"
-              label="Owner"
-              type="text"
-              id="userOwner"
-              name="userOwner"
-              value={recipes.userOwner}
-              onChange={handleChange}
-            />
-            {fieldError.userOwner && (
-              <p className="text-xs text-red-500">{fieldError.userOwner}</p>
-            )}
-          </div>
-          <button className="cursor-pointer bg-gray-300" type="submit">
+          <button
+            type="button"
+            onClick={addIngredient}
+            className="bg-secondary-accent-1 w-[35rem] grow cursor-pointer rounded-md py-2 text-lg font-bold shadow-md"
+          >
+            Add Ingredient
+          </button>
+          <Textarea
+            error={fieldError.instructions}
+            placeholder="Mix it, cook it, eat it."
+            label="Instructions"
+            id="instructions"
+            name="instructions"
+            value={recipes.instructions}
+            onChange={handleChange}
+          />
+
+          <Input
+            error={fieldError.imageUrl}
+            label="Select an Image"
+            type="file"
+            id="imageUrl"
+            name="imageUrl"
+            accept="image/jpeg, image/jpg"
+            onChange={handleChange}
+          />
+
+          <Input
+            error={fieldError.cookingTime}
+            label="Cooking time"
+            type="number"
+            id="cookingTime"
+            name="cookingTime"
+            value={recipes.cookingTime}
+            onChange={handleChange}
+          />
+
+          <Input
+            error={fieldError.userOwner}
+            placeholder="creator"
+            label="Creator's name"
+            type="text"
+            id="userOwner"
+            name="userOwner"
+            value={recipes.userOwner}
+            onChange={handleChange}
+          />
+
+          <button
+            className="bg-secondary-accent-1 w-[35rem] cursor-pointer rounded-lg py-2 text-lg font-bold shadow-md"
+            type="submit"
+          >
             Add Recipe
           </button>
         </form>
