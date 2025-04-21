@@ -6,6 +6,10 @@
   --color-primary-accent-1: #e4ffe1;
   --color-primary-accent-2: #f4fdd9;
   --color-secondary-accent-1: #ffe8c2;
+
+  --font-header: "Fredoka";
+  --font-body: "Nunito";
+  --font-accents: "Caveat";
 }
 
 html {
