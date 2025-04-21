@@ -3,7 +3,7 @@ import Login from "../auth/Login";
 
 function Auth() {
   return (
-    <div>
+    <div className="mt-30">
       <Register />
       <Login />
     </div>

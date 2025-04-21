@@ -121,9 +121,11 @@ function CreateRecipe() {
   };
 
   return (
-    <div>
-      <h2>Create Recipes</h2>
-      <main>
+    <div className="mt-20 py-10">
+      <h2 className="font-header mt-10 text-center text-5xl font-bold">
+        Create Recipes
+      </h2>
+      <main className="mt-15">
         <form
           onSubmit={handleSubmit}
           encType="multipart/form-data"

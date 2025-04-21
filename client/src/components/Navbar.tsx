@@ -1,26 +1,34 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useAuthQuery } from "../hooks/useAuthQuery";
 import { useEffect, useState } from "react";
+import clsx from "clsx";
+import Button from "./Button";
 
 function Navbar() {
   const { logout, isLogged } = useAuthQuery();
   const [isScrolling, setIsScrolling] = useState(false);
+  const location = useLocation();
+
+  const path = location.pathname === "/";
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      console.log("moved");
+    const handleScroll = () => {
+      setIsScrolling(window.scrollY > 100);
+    };
 
-      if (window.scrollY > 100) {
-        setIsScrolling(true);
-      } else {
-        setIsScrolling(false);
-      }
-    });
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <header
-      className={`fixed top-0 w-full ${isScrolling ? "bg-primary-green shadow-lg" : "bg-transparent"} transition-all duration-350 ease-in`}
+      className={clsx(
+        "fixed top-0 w-full transition-all duration-350 ease-in",
+        {
+          "bg-primary-green shadow-lg": !path || (path && isScrolling),
+          "bg-transparent": path && !isScrolling,
+        },
+      )}
     >
       <nav className="m-[0_auto] flex w-3/4 items-center justify-around py-8">
         <div>
@@ -44,17 +52,16 @@ function Navbar() {
         </ul>
         <ul className="">
           {!isLogged && (
-            <Link
-              className="border-secondary-accent-1 font-body cursor-pointer rounded-xl border px-10 py-2 text-xl font-bold text-white"
-              to={"/auth"}
-            >
-              Login
-            </Link>
+            <Button
+              navTo="/auth"
+              label="Login"
+              className="border-secondary-accent-1 font-body w-[8rem] cursor-pointer rounded-xl border py-2 text-xl font-bold text-white"
+            />
           )}
           {isLogged && (
             <button
               onClick={logout}
-              className="cursor-pointer bg-amber-300 px-4 py-1"
+              className="bg-secondary-accent-1 w-[8rem] cursor-pointer rounded-lg py-2 text-xl font-bold"
             >
               Logout
             </button>

@@ -12,11 +12,11 @@ function Home() {
   return (
     <div>
       <Hero />
-      <main className="mt-120 px-12 pb-8">
-        <h1 className="mb-20 text-center text-4xl font-bold">
+      <main className="mt-90 px-12 pb-8 max-sm:px-8">
+        <h1 className="font-header text-primary-green mb-15 text-center text-6xl font-bold">
           Explore Recipes:
         </h1>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4 max-sm:grid-cols-1">
           <Card data={data} />
         </div>
       </main>

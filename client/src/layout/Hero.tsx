@@ -1,3 +1,5 @@
+import Button from "../components/Button";
+
 function Hero() {
   return (
     <div>
@@ -17,9 +19,11 @@ function Hero() {
           Make your best recipe
         </p>
 
-        <a className="bg-secondary-sandyBrown font-body cursor-pointer rounded-xl px-6 py-2 text-2xl font-bold text-white">
-          Explore
-        </a>
+        <Button
+          navTo=""
+          label="Explore"
+          className="bg-secondary-sandyBrown font-body w-[8rem] cursor-pointer rounded-xl py-2 text-xl font-bold text-white"
+        />
       </div>
     </div>
   );
