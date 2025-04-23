@@ -29,11 +29,11 @@ function Saved() {
   }, [data?.username]);
 
   return (
-    <div className="mt-30 px-14">
+    <div className="mt-30 px-14 max-sm:px-8">
       <h1 className="font-header mb-8 text-center text-6xl font-bold">
         Your Recipes
       </h1>
-      <ul className="grid grid-cols-2 gap-6">
+      <ul className="grid grid-cols-2 gap-6 max-sm:grid-cols-1">
         {savedRecipes.length > 0 ? (
           savedRecipes.map((recipe) => (
             <li

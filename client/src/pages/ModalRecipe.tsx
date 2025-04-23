@@ -12,7 +12,7 @@ function ModalRecipe() {
   );
 
   return (
-    <div className="mx-auto my-8 mt-30 max-w-2xl rounded-lg bg-white p-10 shadow-xl">
+    <div className="mx-auto my-8 mt-30 max-w-2xl rounded-lg bg-white p-10 shadow-xl max-sm:mx-3 max-sm:p-5">
       {actualRecipe ? (
         <>
           <Link className="text-secondary-sandyBrown" to={"/saved-recipe"}>
@@ -27,7 +27,7 @@ function ModalRecipe() {
                   : "../assets/images/default.jpg"
               }
               alt="recipe"
-              className="h-full w-full rounded-lg object-cover"
+              className="aspect-video h-full w-full rounded-lg object-cover max-sm:aspect-square"
             />
             <h2 className="font-header text-primary-accent-1 absolute bottom-1 left-5 mb-4 text-4xl font-bold">
               {actualRecipe.name}
@@ -47,7 +47,9 @@ function ModalRecipe() {
           </section>
           <section className="mb-4">
             <h4 className="mb-2 text-2xl font-semibold">📜 Instructions</h4>
-            <p className="whitespace-pre-line">{actualRecipe.instructions}</p>
+            <p className="text-balance whitespace-pre-line">
+              {actualRecipe.instructions}
+            </p>
           </section>
           <section>
             <h4 className="mb-2 text-2xl font-semibold">⏱️ Cooking Time</h4>
