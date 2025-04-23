@@ -8,10 +8,10 @@ import useSaveRecipe from "../hooks/useSaveRecipe";
 import useUserSavedRecipes from "../hooks/useUserSavedRecipes";
 
 function ReadMore() {
-  // fetch del recipe:
-  const { data: recipeData } = useFetchRecipes();
   // creazione del params:
   const { recipeId } = useParams();
+  // fetch del recipe:
+  const { data: recipeData } = useFetchRecipes();
   // dati relativi all'utente:
   const { isLogged, data: userData } = useAuthQuery();
   // dati della mutation:
@@ -35,31 +35,51 @@ function ReadMore() {
   // console.log("fetch One Recipe:", fetchOneRecipe);
 
   return (
-    <div>
-      {fetchOneRecipe ? (
-        <div>
-          <h2>{fetchOneRecipe.name}</h2>
-          <p>{fetchOneRecipe.instructions}</p>
-          <p>{fetchOneRecipe.cookingTime}</p>
-          {isLogged && (
-            <button
-              onClick={() => saveRecipe(fetchOneRecipe.slug)}
-              className="cursor-pointer transition-transform duration-200 hover:scale-110"
-            >
-              {isSaved ? (
-                <BookmarkIcon fontSize="large" className="text-yellow-500" />
-              ) : (
-                <BookmarkOutlinedIcon
-                  fontSize="large"
-                  className="text-gray-500"
-                />
-              )}
-            </button>
-          )}
-        </div>
-      ) : (
-        <p>Recipe not found.</p>
-      )}
+    <div className="mx-auto mt-30 w-full max-w-4xl rounded-lg bg-white p-10 shadow-xl">
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="font-accents text-primary-green text-5xl font-bold">
+          {fetchOneRecipe.name}
+        </h2>
+        {isLogged && (
+          <button
+            onClick={() => saveRecipe(fetchOneRecipe.slug)}
+            className="transition-transform duration-200 hover:scale-110"
+          >
+            {isSaved ? (
+              <BookmarkIcon
+                fontSize="large"
+                className="text-secondary-sandyBrown cursor-pointer"
+              />
+            ) : (
+              <BookmarkOutlinedIcon
+                fontSize="large"
+                className="cursor-pointer text-gray-400"
+              />
+            )}
+          </button>
+        )}
+      </div>
+
+      <section className="mb-6">
+        <h4 className="mb-2 text-2xl font-semibold">🧂 Ingredients</h4>
+        <ul className="ml-5 list-disc space-y-1 text-lg">
+          {fetchOneRecipe.ingredients.map((ing: string, i: number) => (
+            <li key={i}>{ing}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="mb-6">
+        <h4 className="mb-2 text-2xl font-semibold">📜 Instructions</h4>
+        <p className="text-lg whitespace-pre-line">
+          {fetchOneRecipe.instructions}
+        </p>
+      </section>
+
+      <section>
+        <h4 className="mb-2 text-2xl font-semibold">⏱️ Cooking Time</h4>
+        <p className="text-lg">{fetchOneRecipe.cookingTime}</p>
+      </section>
     </div>
   );
 }

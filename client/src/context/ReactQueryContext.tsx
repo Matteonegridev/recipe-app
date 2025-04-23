@@ -144,7 +144,7 @@ function AuthContextWithQuery({ children }: PropsContext) {
         queryKey: ["user"],
         refetchType: "active",
       });
-      navigate("/auth");
+      navigate("/");
     },
   });
 
