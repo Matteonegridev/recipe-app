@@ -11,20 +11,28 @@ function ModalRecipe() {
       recipe._id === recipeId || recipe.slug === recipeId,
   );
 
-  console.log("🍳 All recipes:", recipeData);
-  console.log("🧩 Found recipe:", actualRecipe);
-  console.log("🧠 ID from route:", recipeId);
-
   return (
-    <div className="mx-auto mt-30 max-w-2xl rounded-lg bg-white p-10 shadow-xl">
+    <div className="mx-auto my-8 mt-30 max-w-2xl rounded-lg bg-white p-10 shadow-xl">
       {actualRecipe ? (
         <>
           <Link className="text-secondary-sandyBrown" to={"/saved-recipe"}>
             Back
           </Link>
-          <h2 className="font-header my-4 text-4xl font-bold">
-            {actualRecipe.name}
-          </h2>
+          <div className="relative my-6">
+            <div className="before:content[''] before:absolute before:h-full before:w-full before:rounded-lg before:bg-gradient-to-t before:from-black before:from-50% before:opacity-50"></div>
+            <img
+              src={
+                actualRecipe.imageUrl
+                  ? `http://localhost:3000${actualRecipe.imageUrl}`
+                  : "../assets/images/default.jpg"
+              }
+              alt="recipe"
+              className="h-full w-full rounded-lg object-cover"
+            />
+            <h2 className="font-header text-primary-accent-1 absolute bottom-1 left-5 mb-4 text-4xl font-bold">
+              {actualRecipe.name}
+            </h2>
+          </div>
           <section className="mb-4">
             <h4 className="mb-2 text-2xl font-semibold">🧂 Ingredients</h4>
             <ul className="ml-5 list-disc">

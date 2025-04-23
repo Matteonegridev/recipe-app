@@ -23,7 +23,7 @@ function Navbar() {
   return (
     <header
       className={clsx(
-        "fixed top-0 w-full transition-all duration-350 ease-in",
+        "fixed top-0 z-10 w-full transition-all duration-350 ease-in",
         {
           "bg-primary-green shadow-lg": !path || (path && isScrolling),
           "bg-transparent": path && !isScrolling,

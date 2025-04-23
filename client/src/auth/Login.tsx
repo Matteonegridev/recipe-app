@@ -62,7 +62,7 @@ const Login = () => {
           id="username"
           name="username"
           label="Username"
-          value={displayError.username}
+          value={data.username}
           onChange={handleChange}
         />
         <Input
@@ -72,7 +72,7 @@ const Login = () => {
           id="password"
           name="password"
           label="Password"
-          value={displayError.password}
+          value={data.password}
           onChange={handleChange}
         />
         <button
