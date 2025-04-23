@@ -1,27 +1,29 @@
 import { Link } from "react-router";
 import { type Recipes } from "../pages/CreateRecipe";
+import { useInView } from "react-intersection-observer";
 
 function Card({ data }: { data: Recipes[] }) {
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+  });
+
   return (
     <>
       {data.map((recipes: Recipes) => (
         <div
+          ref={ref}
           key={recipes.name}
           className="aspect-[6/4] rounded-lg bg-white shadow-md"
         >
-          {recipes.imageUrl ? (
-            <img
-              src={`http://localhost:3000${recipes.imageUrl}`}
-              alt="Recipe Image"
-              className="h-full w-full rounded-t-lg object-cover"
-            />
-          ) : (
-            <img
-              src="./assets/images/default.jpg"
-              alt="default cooking image"
-              className="h-full w-full rounded-t-lg object-cover"
-            />
-          )}
+          <img
+            src={
+              recipes.imageUrl && inView
+                ? `http://localhost:3000${recipes.imageUrl}`
+                : "./assets/images/default.jpg"
+            }
+            alt="Recipe Image"
+            className="h-full w-full rounded-t-lg object-cover"
+          />
 
           <div className="px-3 py-6">
             <div className="flex items-center gap-2">

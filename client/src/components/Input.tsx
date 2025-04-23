@@ -15,7 +15,7 @@ function Input({ type, id, name, label, error, ...rest }: InputProps) {
         {label}
       </label>
       <input
-        className="w-[35rem] rounded-md px-2 py-3 shadow-lg"
+        className="outline-secondary-sandyBrown shadow-secondary-sandyBrown w-[35rem] rounded-md border-none px-2 py-3 text-lg shadow-sm"
         type={type}
         id={id}
         name={name}

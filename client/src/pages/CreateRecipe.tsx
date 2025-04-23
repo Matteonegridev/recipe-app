@@ -46,10 +46,13 @@ function CreateRecipe() {
   ) => {
     const { name, value, files } = e.target as HTMLInputElement;
     if (name === "imageUrl" && files) {
+      // handle file:
       setRecipes((prev) => ({ ...prev, [name]: files[0] }));
     } else if (name === "cookingTime") {
+      // handle number:
       setRecipes((prev) => ({ ...prev, cookingTime: parseInt(value) }));
     } else {
+      // All the other values:
       setRecipes((prev) => ({ ...prev, [name]: value }));
     }
   };
@@ -144,16 +147,16 @@ function CreateRecipe() {
 
           <div className="w-[35rem]">
             {recipes.ingredients.map((ingredient, index) => (
-              <div key={index} className="flex justify-between space-y-3">
+              <div key={index} className="flex justify-between pb-4">
                 <Input
                   error={fieldError.ingredients}
                   placeholder={`Ingredient`}
-                  label={`Ingredient ${index + 1}`}
+                  label="Ingredients"
                   type="text"
                   id="ingredients"
                   name="ingredients"
                   value={ingredient}
-                  className="w-[25rem] rounded-md border px-1 py-2"
+                  className="outline-secondary-sandyBrown shadow-secondary-sandyBrown w-[25rem] rounded-md border-none px-2 py-3 text-xl shadow-sm"
                   onChange={(e) => handleChangeAddedIngredient(e, index)}
                 />
                 <button
@@ -190,6 +193,7 @@ function CreateRecipe() {
             id="imageUrl"
             name="imageUrl"
             accept="image/jpeg, image/jpg"
+            className="file:bg-secondary-accent-1 hover:file:bg-primary-accent-2 w-[35rem] rounded-md border-none py-2 text-lg outline-none file:mr-4 file:cursor-pointer file:rounded-lg file:px-4 file:py-2 file:text-lg file:font-semibold file:text-black file:shadow-md file:transition-all file:duration-150 file:ease-in"
             onChange={handleChange}
           />
 

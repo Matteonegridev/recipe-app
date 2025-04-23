@@ -6,6 +6,7 @@ function Hero() {
       <picture className="absolute top-0 -z-10">
         <div className="before:absolute before:z-10 before:h-full before:w-full before:bg-gradient-to-b before:from-white before:from-5% before:to-black before:to-40% before:opacity-35 before:content-['']"></div>
         <img
+          loading="lazy"
           src="./assets/images/hero.jpg"
           alt="Cooking Chef"
           className="k aspect-video h-auto w-full object-cover"
