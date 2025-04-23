@@ -30,7 +30,7 @@ function Navbar() {
         },
       )}
     >
-      <nav className="m-[0_auto] flex w-3/4 items-center justify-around py-8">
+      <nav className="m-auto flex w-11/12 items-center justify-around py-6">
         <div>
           <h1 className="font-body text-4xl font-bold text-white">
             Recipe
@@ -50,13 +50,20 @@ function Navbar() {
             <Link to={`/saved-recipe`}>Save</Link>
           </li>
         </ul>
-        <ul className="">
+        <ul className="flex gap-4">
           {!isLogged && (
-            <Button
-              navTo="/auth"
-              label="Login"
-              className="border-secondary-accent-1 font-body w-[8rem] cursor-pointer rounded-xl border py-2 text-xl font-bold text-white"
-            />
+            <>
+              <Button
+                navTo="/auth/login"
+                label="Login"
+                className="border-secondary-accent-1 font-body w-[8rem] cursor-pointer rounded-xl border py-2 text-xl font-bold text-white"
+              />
+              <Button
+                navTo="/auth/register"
+                label="Register"
+                className="bg-secondary-accent-1 font-body w-[8rem] cursor-pointer rounded-xl border py-2 text-xl font-bold text-black"
+              />
+            </>
           )}
           {isLogged && (
             <button

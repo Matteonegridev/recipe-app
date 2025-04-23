@@ -47,36 +47,40 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <h1>Register</h1>
-        <div>
-          <Input
-            type="text"
-            id="username"
-            name="username"
-            label="username"
-            value={data.username}
-            onChange={handleChange}
-          />
-          {displayError.username && (
-            <p className="text-xs text-red-500">{displayError.username}</p>
-          )}
-        </div>
-        <div>
-          <Input
-            type="password"
-            id="password"
-            name="password"
-            label="Password"
-            value={data.password}
-            onChange={handleChange}
-          />
-          {displayError.password && (
-            <p className="text-xs text-red-500">{displayError.password}</p>
-          )}
-        </div>
-        <button type="submit">Login</button>
+    <div className="mt-25">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center space-y-10 px-10 py-20"
+      >
+        <h1 className="text-secondary-sandyBrown font-header text-6xl font-bold">
+          Login
+        </h1>
+        <Input
+          error={displayError.username}
+          placeholder="Your login username"
+          type="text"
+          id="username"
+          name="username"
+          label="Username"
+          value={displayError.username}
+          onChange={handleChange}
+        />
+        <Input
+          placeholder="Your password"
+          error={displayError.password}
+          type="password"
+          id="password"
+          name="password"
+          label="Password"
+          value={displayError.password}
+          onChange={handleChange}
+        />
+        <button
+          className="bg-primary-green w-[10rem] cursor-pointer rounded-lg py-2 text-lg font-bold text-white"
+          type="submit"
+        >
+          Login
+        </button>
       </form>
     </div>
   );

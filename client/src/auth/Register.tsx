@@ -59,38 +59,43 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <h1>Register</h1>
-        <div>
-          <Input
-            label="What should we call you?"
-            type="text"
-            id="register-username"
-            name="username"
-            value={data.username}
-            onChange={handleChange}
-            placeholder="type your username"
-          />
-          {fieldError.username && (
-            <p className="text-xs text-red-500">{fieldError.username}</p>
-          )}
-        </div>
-        <div>
-          <Input
-            label="Password"
-            type="password"
-            id="register-password"
-            name="password"
-            value={data.password}
-            onChange={handleChange}
-            placeholder="Type your strongest password"
-          />
-          {fieldError.password && (
-            <p className="text-xs text-red-500">{fieldError.password}</p>
-          )}
-        </div>
-        <button type="submit">Register</button>
+    <div className="mt-25">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center space-y-10 px-10 py-20"
+      >
+        <h1 className="font-header text-secondary-sandyBrown text-6xl font-bold">
+          Register
+        </h1>
+
+        <Input
+          error={fieldError.username}
+          label="What should we call you?"
+          type="text"
+          id="register-username"
+          name="username"
+          value={data.username}
+          onChange={handleChange}
+          placeholder="type your username"
+        />
+
+        <Input
+          error={fieldError.password}
+          label="Password"
+          type="password"
+          id="register-password"
+          name="password"
+          value={data.password}
+          onChange={handleChange}
+          placeholder="Type your strongest password"
+        />
+
+        <button
+          className="bg-primary-green w-[10rem] cursor-pointer rounded-lg py-2 text-lg font-bold text-white"
+          type="submit"
+        >
+          Register
+        </button>
       </form>
     </div>
   );
