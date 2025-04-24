@@ -69,7 +69,7 @@ const saveRecipes = async (req, res) => {
       return res.status(404).json({ message: "User not found." });
     }
 
-    // Check if recipe is already saved, we use some because we only want a yes/no answer:
+    // Check if recipe is already saved, we use .some() because we only want a yes/no answer:
     const isAlreadySaved = fetchedUser.savedRecipes.some((recipe) => recipe?.slug === fetchedRecipe.slug);
 
     // Unsave if already saved:

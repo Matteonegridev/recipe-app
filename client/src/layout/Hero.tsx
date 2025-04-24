@@ -9,14 +9,14 @@ function Hero() {
           loading="lazy"
           src="./assets/images/hero.jpg"
           alt="Cooking Chef"
-          className="k aspect-video h-auto w-full object-cover"
+          className="aspect-video h-auto w-full object-cover max-sm:aspect-square max-sm:h-[85dvh]"
         />
       </picture>
-      <div className="px-14 pt-80">
-        <h1 className="font-header mb-4 text-7xl font-bold text-white">
+      <div className="px-14 pt-80 max-sm:px-8 max-sm:pt-40">
+        <h1 className="font-header mb-4 text-7xl font-bold text-white max-sm:text-6xl">
           Create it. Make it. Share it.
         </h1>
-        <p className="font-body mb-14 text-2xl text-white">
+        <p className="font-body mb-14 text-2xl text-white max-sm:text-2xl">
           Make your best recipe
         </p>
 

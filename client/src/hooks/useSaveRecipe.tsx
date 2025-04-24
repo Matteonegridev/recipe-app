@@ -22,6 +22,7 @@ const saveRecipes = async (recipeId: string) => {
   }
 };
 
+// username is the logged user.
 function useSaveRecipe(username: string) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
