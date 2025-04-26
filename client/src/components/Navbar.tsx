@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useAuthQuery } from "../hooks/useAuthQuery";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
@@ -9,6 +9,7 @@ function Navbar() {
   const [isScrolling, setIsScrolling] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === "/";
 
   useEffect(() => {
@@ -62,12 +63,16 @@ function Navbar() {
           {!isLogged ? (
             <>
               <Button
-                navTo="/auth/login"
+                onClick={() => {
+                  navigate("/auth/login");
+                }}
                 label="Login"
                 className="border-secondary-accent-1 font-body w-[8rem] cursor-pointer rounded-xl border py-2 text-xl font-bold text-white"
               />
               <Button
-                navTo="/auth/register"
+                onClick={() => {
+                  navigate("auth/register");
+                }}
                 label="Register"
                 className="bg-secondary-accent-1 font-body w-[8rem] cursor-pointer rounded-xl py-2 text-xl font-bold text-black"
               />
@@ -140,12 +145,18 @@ function Navbar() {
             {!isLogged ? (
               <>
                 <Button
-                  navTo="/auth/login"
+                  onClick={() => {
+                    navigate("/auth/login");
+                    setIsMenuOpen(false);
+                  }}
                   label="Login"
                   className="border-secondary-accent-1 w-full border py-2 font-bold text-white"
                 />
                 <Button
-                  navTo="/auth/register"
+                  onClick={() => {
+                    navigate("/auth/register");
+                    setIsMenuOpen(false);
+                  }}
                   label="Register"
                   className="bg-secondary-accent-1 w-full py-2 font-bold text-black"
                 />

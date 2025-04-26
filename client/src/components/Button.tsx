@@ -1,16 +1,14 @@
 import { ComponentProps } from "react";
-import { useNavigate } from "react-router";
 
 type Props = ComponentProps<"button"> & {
   label: string;
-  navTo: string;
+
   className: string;
 };
 
-function Button({ label, navTo, className }: Props) {
-  const navigate = useNavigate();
+function Button({ label, className, onClick }: Props) {
   return (
-    <button className={className} onClick={() => navigate(navTo)}>
+    <button className={className} onClick={onClick}>
       {label}
     </button>
   );
