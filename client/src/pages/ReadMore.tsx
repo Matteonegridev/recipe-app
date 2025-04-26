@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import useFetchRecipes from "../hooks/useFetchRecipes";
 import { type Recipes } from "./CreateRecipe";
 import { useAuthQuery } from "../hooks/useAuthQuery";
@@ -35,7 +35,12 @@ function ReadMore() {
   // console.log("fetch One Recipe:", fetchOneRecipe);
 
   return (
-    <div className="mx-auto mt-30 w-full max-w-4xl rounded-lg bg-white p-10 shadow-xl">
+    <div className="mx-auto mt-30 w-full max-w-4xl rounded-lg bg-white p-10 py-5 shadow-xl">
+      <div className="mb-8" aria-label="link">
+        <Link className="text-secondary-sandyBrown" to={"/"}>
+          Back
+        </Link>
+      </div>
       <div className="mb-6 flex items-center justify-between">
         <h2 className="font-accents text-primary-green text-5xl font-bold">
           {fetchOneRecipe.name}
