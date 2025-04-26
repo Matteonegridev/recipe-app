@@ -26,16 +26,14 @@ function Card({ data }: { data: Recipes[] }) {
           />
 
           <div className="px-3 py-6">
-            <div className="flex items-center gap-2">
-              <p className="text-3xl font-bold">Recipe Name:</p>
-              <span className="font-accents text-primary-green text-4xl capitalize">
-                {" "}
+            <div className="w-full text-pretty">
+              <h5 className="mb-2 text-4xl font-bold">Recipe Name:</h5>
+              <p className="font-accents text-primary-green mb-1 text-4xl capitalize">
                 {recipes.name}
-              </span>
+              </p>
             </div>
-
             <Link
-              className="text-secondary-sandyBrown font-body text-lg"
+              className="text-secondary-sandyBrown font-body text-md hover:text-orange-600"
               to={`/recipes/${recipes?.slug || recipes._id}`}
             >
               Read More

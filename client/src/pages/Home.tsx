@@ -16,7 +16,7 @@ function Home() {
         <h1 className="font-header text-primary-green md: pb-10 text-center text-5xl font-bold">
           Explore Recipes:
         </h1>
-        <div className="grid grid-cols-3 gap-4 max-sm:grid-cols-1">
+        <div className="grid grid-cols-3 gap-4 max-lg:grid-cols-2 max-md:grid-cols-1">
           <Card data={data} />
         </div>
       </main>

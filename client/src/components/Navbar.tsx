@@ -45,7 +45,7 @@ function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <ul className="hidden items-center gap-10 text-white sm:flex">
+        <ul className="hidden items-center gap-10 text-white lg:flex">
           {navLinks.map(({ label, path }) => (
             <li key={path}>
               <Link
@@ -59,7 +59,7 @@ function Navbar() {
         </ul>
 
         {/* Desktop Auth Buttons */}
-        <div className="hidden items-center gap-4 sm:flex">
+        <div className="hidden items-center gap-4 lg:flex">
           {!isLogged ? (
             <>
               <Button
@@ -90,7 +90,7 @@ function Navbar() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="z-50 flex flex-col gap-1 sm:hidden"
+          className="z-50 flex flex-col gap-1 lg:hidden"
           aria-label="Toggle Menu"
         >
           <span
@@ -118,7 +118,7 @@ function Navbar() {
       <>
         <div
           className={clsx(
-            "fixed inset-0 -z-40 bg-black transition-all duration-300 ease-in sm:hidden",
+            "fixed inset-0 -z-40 bg-black transition-all duration-300 ease-in lg:hidden",
             isMenuOpen ? "opacity-70" : "pointer-events-none opacity-0",
           )}
         ></div>
