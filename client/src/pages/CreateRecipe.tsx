@@ -124,109 +124,111 @@ function CreateRecipe() {
   };
 
   return (
-    <div className="bg-primary-accent-1 mt-20 py-10">
-      <h2 className="font-header mt-10 text-center text-5xl font-bold text-gray-600">
+    <main className="bg-primary-accent-1 min-h-[100dvh] w-full overflow-x-hidden py-10">
+      <h2 className="font-header mt-10 py-8 text-center text-5xl font-bold text-gray-600 max-sm:text-4xl">
         Create a recipe!
       </h2>
-      <main className="mt-15">
-        <form
-          onSubmit={handleSubmit}
-          encType="multipart/form-data"
-          className="m-auto flex w-2xl flex-col items-center space-y-5 rounded-lg bg-white py-8 shadow-xl"
+
+      <form
+        onSubmit={handleSubmit}
+        encType="multipart/form-data"
+        className="mx-auto max-w-4xl space-y-8 rounded-lg bg-white p-10 shadow-lg max-sm:m-4 max-sm:p-4"
+      >
+        <Input
+          error={fieldError.name}
+          placeholder="Recipe's name"
+          label="Name"
+          type="text"
+          id="name"
+          name="name"
+          value={recipes.name}
+          onChange={handleChange}
+        />
+
+        <div className="w-full">
+          {recipes.ingredients.map((ingredient, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between gap-8 pb-4 max-sm:gap-4"
+            >
+              <Input
+                error={fieldError.ingredients}
+                placeholder={`Ingredient`}
+                label="Ingredients"
+                type="text"
+                id="ingredients"
+                name="ingredients"
+                value={ingredient}
+                onChange={(e) => handleChangeAddedIngredient(e, index)}
+              />
+              <button
+                // className="flex h-13 w-13 cursor-pointer items-center justify-center rounded-full bg-red-400 text-xl font-bold text-white max-sm:h-10 max-sm:w-10"
+                className="h-12 w-12 cursor-pointer self-end rounded-full text-xl font-bold text-black"
+                type="button"
+                onClick={() => removeIngredient(index)}
+              >
+                ❌
+              </button>
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={addIngredient}
+          className="bg-secondary-accent-1 w-full grow cursor-pointer rounded-md py-2 text-lg font-bold shadow-md"
         >
-          <Input
-            error={fieldError.name}
-            placeholder="Recipe's name"
-            label="Name"
-            type="text"
-            id="name"
-            name="name"
-            value={recipes.name}
-            onChange={handleChange}
-          />
+          Add Ingredient
+        </button>
+        <Textarea
+          error={fieldError.instructions}
+          placeholder="Mix it, cook it, eat it."
+          label="Instructions"
+          id="instructions"
+          name="instructions"
+          value={recipes.instructions}
+          onChange={handleChange}
+        />
 
-          <div className="w-[35rem]">
-            {recipes.ingredients.map((ingredient, index) => (
-              <div key={index} className="flex justify-between pb-4">
-                <Input
-                  error={fieldError.ingredients}
-                  placeholder={`Ingredient`}
-                  label="Ingredients"
-                  type="text"
-                  id="ingredients"
-                  name="ingredients"
-                  value={ingredient}
-                  className="outline-secondary-sandyBrown shadow-secondary-sandyBrown w-[25rem] rounded-md border-none px-2 py-3 text-xl shadow-sm"
-                  onChange={(e) => handleChangeAddedIngredient(e, index)}
-                />
-                <button
-                  className="flex h-11 w-11 cursor-pointer items-center justify-center self-end rounded-full bg-red-400 text-xl font-bold text-white"
-                  type="button"
-                  onClick={() => removeIngredient(index)}
-                >
-                  X
-                </button>
-              </div>
-            ))}
-          </div>
-          <button
-            type="button"
-            onClick={addIngredient}
-            className="bg-secondary-accent-1 w-[35rem] grow cursor-pointer rounded-md py-2 text-lg font-bold shadow-md"
-          >
-            Add Ingredient
-          </button>
-          <Textarea
-            error={fieldError.instructions}
-            placeholder="Mix it, cook it, eat it."
-            label="Instructions"
-            id="instructions"
-            name="instructions"
-            value={recipes.instructions}
-            onChange={handleChange}
-          />
+        <Input
+          error={fieldError.imageUrl}
+          label="Select an Image"
+          type="file"
+          id="imageUrl"
+          name="imageUrl"
+          accept="image/jpeg, image/jpg"
+          className="file:bg-secondary-accent-1 hover:file:bg-primary-accent-2 w-[35rem] rounded-md border-none py-2 text-lg outline-none file:mr-4 file:cursor-pointer file:rounded-lg file:px-4 file:py-2 file:text-lg file:font-semibold file:text-black file:shadow-md file:transition-all file:duration-150 file:ease-in"
+          onChange={handleChange}
+        />
 
-          <Input
-            error={fieldError.imageUrl}
-            label="Select an Image"
-            type="file"
-            id="imageUrl"
-            name="imageUrl"
-            accept="image/jpeg, image/jpg"
-            className="file:bg-secondary-accent-1 hover:file:bg-primary-accent-2 w-[35rem] rounded-md border-none py-2 text-lg outline-none file:mr-4 file:cursor-pointer file:rounded-lg file:px-4 file:py-2 file:text-lg file:font-semibold file:text-black file:shadow-md file:transition-all file:duration-150 file:ease-in"
-            onChange={handleChange}
-          />
+        <Input
+          error={fieldError.cookingTime}
+          label="Cooking time"
+          type="number"
+          id="cookingTime"
+          name="cookingTime"
+          value={recipes.cookingTime}
+          onChange={handleChange}
+        />
 
-          <Input
-            error={fieldError.cookingTime}
-            label="Cooking time"
-            type="number"
-            id="cookingTime"
-            name="cookingTime"
-            value={recipes.cookingTime}
-            onChange={handleChange}
-          />
+        <Input
+          error={fieldError.userOwner}
+          placeholder="creator"
+          label="Creator's name"
+          type="text"
+          id="userOwner"
+          name="userOwner"
+          value={recipes.userOwner}
+          onChange={handleChange}
+        />
 
-          <Input
-            error={fieldError.userOwner}
-            placeholder="creator"
-            label="Creator's name"
-            type="text"
-            id="userOwner"
-            name="userOwner"
-            value={recipes.userOwner}
-            onChange={handleChange}
-          />
-
-          <button
-            className="bg-secondary-accent-1 w-[35rem] cursor-pointer rounded-lg py-2 text-lg font-bold shadow-md"
-            type="submit"
-          >
-            Add Recipe
-          </button>
-        </form>
-      </main>
-    </div>
+        <button
+          className="bg-secondary-accent-1 w-full cursor-pointer rounded-lg py-2 text-lg font-bold shadow-md"
+          type="submit"
+        >
+          Add Recipe
+        </button>
+      </form>
+    </main>
   );
 }
 

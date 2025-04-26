@@ -9,12 +9,12 @@ type TextareaProps = ComponentProps<"textarea"> & {
 
 function Textarea({ id, name, label, error, ...rest }: TextareaProps) {
   return (
-    <div className="flex flex-col">
+    <div className="flex w-full flex-col">
       <label className="text-lg font-bold" htmlFor={name}>
         {label}
       </label>
       <textarea
-        className="shadow-secondary-sandyBrown outline-secondary-sandyBrown mt-1 w-[35rem] rounded-md border border-none px-1 py-2 text-lg shadow-sm"
+        className="shadow-secondary-sandyBrown outline-secondary-sandyBrown mt-1 w-full rounded-md border border-none px-1 py-2 text-lg shadow-sm"
         id={id}
         name={name}
         {...rest}

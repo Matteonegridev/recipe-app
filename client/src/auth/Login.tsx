@@ -47,10 +47,10 @@ const Login = () => {
   };
 
   return (
-    <div className="mt-25">
+    <div className="flex min-h-screen w-full items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center space-y-10 px-10 py-20"
+        className="flex max-w-xl grow flex-col items-center space-y-10 max-sm:px-8"
       >
         <h1 className="text-secondary-sandyBrown font-header text-6xl font-bold">
           Login

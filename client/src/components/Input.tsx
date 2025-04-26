@@ -10,12 +10,12 @@ type InputProps = ComponentProps<"input"> & {
 
 function Input({ type, id, name, label, error, ...rest }: InputProps) {
   return (
-    <div className="flex flex-col space-y-1">
+    <div className="flex w-full flex-col space-y-1">
       <label className="text-lg font-bold" htmlFor={name}>
         {label}
       </label>
       <input
-        className="outline-secondary-sandyBrown shadow-secondary-sandyBrown w-[35rem] rounded-md border-none px-2 py-3 text-lg shadow-sm"
+        className="outline-secondary-sandyBrown shadow-secondary-sandyBrown w-full rounded-md border-none px-2 py-3 text-lg shadow-sm"
         type={type}
         id={id}
         name={name}

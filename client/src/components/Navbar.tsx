@@ -114,7 +114,7 @@ function Navbar() {
         <div
           className={clsx(
             "fixed inset-0 -z-40 bg-black transition-all duration-300 ease-in sm:hidden",
-            isMenuOpen ? "opacity-70" : "opacity-0",
+            isMenuOpen ? "opacity-70" : "pointer-events-none opacity-0",
           )}
         ></div>
         <div
