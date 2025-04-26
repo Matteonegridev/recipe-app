@@ -35,7 +35,7 @@ function Navbar() {
         },
       )}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-around py-4">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-8">
         <Link to="/" className="font-body text-3xl font-bold text-white">
           Recipe
           <span className="text-secondary-sandyBrown font-accents text-4xl">
@@ -85,85 +85,61 @@ function Navbar() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="z-50 flex flex-col gap-1 sm:hidden"
+          className="flex flex-col gap-1 sm:hidden"
           aria-label="Toggle Menu"
         >
-          <span
-            className={clsx(
-              "h-1 w-8 bg-white transition-all duration-150 ease-linear",
-              isMenuOpen && "translate-y-1 rotate-45",
-            )}
-          />
-          <span
-            className={clsx(
-              "h-1 w-8 bg-white transition-all duration-150 ease-linear",
-              isMenuOpen && "hidden",
-            )}
-          />
-          <span
-            className={clsx(
-              "h-1 w-8 bg-white transition-all duration-150 ease-linear",
-              isMenuOpen && "-translate-y-1 -rotate-45",
-            )}
-          />
+          <span className="h-1 w-6 bg-white" />
+          <span className="h-1 w-6 bg-white" />
+          <span className="h-1 w-6 bg-white" />
         </button>
       </nav>
 
       {/* Mobile Menu Panel */}
-      <>
-        <div
-          className={clsx(
-            "fixed inset-0 -z-40 bg-black transition-all duration-300 ease-in sm:hidden",
-            isMenuOpen ? "opacity-70" : "opacity-0",
-          )}
-        ></div>
-        <div
-          className={clsx(
-            "bg-primary-green absolute top-0 w-full p-6 shadow-lg transition-all duration-200 ease-in-out",
-            isMenuOpen ? "translate-x-0" : "-translate-x-full",
-          )}
-        >
-          <ul className="mt-12 space-y-6 text-white">
-            {navLinks.map(({ label, path }) => (
-              <li key={path}>
-                <Link
-                  to={path}
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="font-body hover:text-secondary-sandyBrown block text-xl font-medium uppercase"
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-black/70 sm:hidden">
+          <div className="bg-primary-green absolute top-0 right-0 w-3/4 max-w-sm p-6 shadow-lg">
+            <ul className="space-y-6 text-white">
+              {navLinks.map(({ label, path }) => (
+                <li key={path}>
+                  <Link
+                    to={path}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="font-body hover:text-secondary-sandyBrown block text-xl font-medium uppercase"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 space-y-4">
+              {!isLogged ? (
+                <>
+                  <Button
+                    navTo="/auth/login"
+                    label="Login"
+                    className="border-secondary-accent-1 w-full border text-white"
+                  />
+                  <Button
+                    navTo="/auth/register"
+                    label="Register"
+                    className="bg-secondary-accent-1 w-full text-black"
+                  />
+                </>
+              ) : (
+                <button
+                  onClick={() => {
+                    logout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="bg-secondary-sandyBrown w-full py-2 text-xl font-bold text-white"
                 >
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-6 space-y-4">
-            {!isLogged ? (
-              <>
-                <Button
-                  navTo="/auth/login"
-                  label="Login"
-                  className="border-secondary-accent-1 w-full border py-2 font-bold text-white"
-                />
-                <Button
-                  navTo="/auth/register"
-                  label="Register"
-                  className="bg-secondary-accent-1 w-full py-2 font-bold text-black"
-                />
-              </>
-            ) : (
-              <button
-                onClick={() => {
-                  logout();
-                  setIsMenuOpen(false);
-                }}
-                className="bg-secondary-sandyBrown w-full py-2 text-xl font-bold text-white"
-              >
-                Logout
-              </button>
-            )}
+                  Logout
+                </button>
+              )}
+            </div>
           </div>
         </div>
-      </>
+      )}
     </header>
   );
 }
