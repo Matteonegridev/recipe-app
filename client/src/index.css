@@ -10,6 +10,8 @@
   --font-header: "Fredoka";
   --font-body: "Nunito";
   --font-accents: "Caveat";
+
+  --breakpoint-sm: 30rem;
 }
 
 body {

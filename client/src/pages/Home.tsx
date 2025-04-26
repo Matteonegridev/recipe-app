@@ -10,17 +10,17 @@ function Home() {
   if (!data) return <p>No data available</p>;
 
   return (
-    <div>
+    <>
       <Hero />
-      <main className="mt-90 px-12 pb-8 max-sm:mt-40 max-sm:px-8">
-        <h1 className="font-header text-primary-green mb-15 text-center text-6xl font-bold">
+      <main className="mt-14 px-12 pb-8 max-sm:mt-10 max-sm:px-8">
+        <h1 className="font-header text-primary-green md: pb-10 text-center text-5xl font-bold">
           Explore Recipes:
         </h1>
         <div className="grid grid-cols-3 gap-4 max-sm:grid-cols-1">
           <Card data={data} />
         </div>
       </main>
-    </div>
+    </>
   );
 }
 
