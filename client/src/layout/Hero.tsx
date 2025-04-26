@@ -1,6 +1,10 @@
 import Button from "../components/Button";
 
 function Hero() {
+  const scrollIntoView = () => {
+    window.scrollTo({ top: 700, behavior: "smooth" });
+  };
+
   return (
     <div>
       <picture className="absolute top-0 -z-10">
@@ -21,7 +25,7 @@ function Hero() {
         </p>
 
         <Button
-          navTo=""
+          onClick={scrollIntoView}
           label="Explore"
           className="bg-secondary-sandyBrown font-body w-[8rem] cursor-pointer rounded-xl py-2 text-xl font-bold text-white"
         />
