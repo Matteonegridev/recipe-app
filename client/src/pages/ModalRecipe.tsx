@@ -23,7 +23,7 @@ function ModalRecipe() {
             <img
               src={
                 actualRecipe.imageUrl
-                  ? `http://localhost:3000${actualRecipe.imageUrl}`
+                  ? `${import.meta.env.VITE_API_URL}${actualRecipe.imageUrl}`
                   : "../assets/images/default.jpg"
               }
               alt="recipe"

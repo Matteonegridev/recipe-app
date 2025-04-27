@@ -2,8 +2,9 @@
 
 import { useState, ReactNode, useEffect } from "react";
 import { AuthContext } from "../hooks/useAuth";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useNavigate } from "react-router";
+import api from "../lib/axios";
 
 type User = {
   username: string;
@@ -52,11 +53,7 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
       return;
     }
     try {
-      const response = await axios.post(
-        "http://localhost:3000/user/login",
-        { username, password },
-        { withCredentials: true },
-      );
+      const response = await api.post(`/user/login`, { username, password });
 
       if (response.status === 200) {
         setAuthUser({ username: response.data.username });
@@ -84,11 +81,7 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
 
   const logout = async () => {
     try {
-      await axios.post(
-        "http://localhost:3000/user/logout",
-        {},
-        { withCredentials: true },
-      );
+      await api.post(`/user/logout`, {});
       setAuthUser(null);
       setIsLogged(false);
     } catch (error) {
@@ -98,7 +91,7 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
 
   const register = async (username: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:3000/user/register", {
+      const response = await api.post(`/user/register`, {
         username,
         password,
       });
@@ -111,9 +104,7 @@ export const AuthContextProvider = ({ children }: ProviderProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/user/profile", {
-          withCredentials: true,
-        });
+        const res = await api.get(`/user/profile`);
         login(res.data.username, res.data.password);
       } catch (err) {
         setAuthUser(null);

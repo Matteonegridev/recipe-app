@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../lib/axios";
+// import axios from "axios";
 
 const fetchRecipes = async () => {
   const response = await api.get(`/home`);
