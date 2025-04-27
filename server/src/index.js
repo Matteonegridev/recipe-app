@@ -37,10 +37,7 @@ app.use(passport.initialize());
 
 const corsOptions = {
   origin: (origin, callback) => {
-    const allowedOrigins = [
-      "https://yourecipecraft.netlify.app",
-      "https://yourecipecraft.netlify.app/", // Include both if necessary
-    ];
+    const allowedOrigins = ["https://yourecipecraft.netlify.app", "http://localhost:5173"];
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
