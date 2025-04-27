@@ -60,9 +60,9 @@ function Navbar() {
         </ul>
 
         {/* Desktop Auth Buttons */}
-        <div>
+        <div className="max-md:hidden">
           {!isLogged ? (
-            <div className="hidden gap-4 lg:flex lg:items-center">
+            <div className="gap-4 lg:flex lg:items-center">
               <Button
                 variant="secondary"
                 onClick={() => {
