@@ -35,12 +35,20 @@ app.use(
 app.use(cookieParser());
 app.use(passport.initialize());
 
-app.use(
-  cors({
-    origin: process.env.NODE_ENV === "production" ? process.env.CLIENT_URL : "http://localhost:5173",
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      "https://yourecipecraft.netlify.app",
+      "https://yourecipecraft.netlify.app/", // Include both if necessary
+    ];
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+app.use(cors(corsOptions));
 
 app.use(sanitize());
 // generate static files:
