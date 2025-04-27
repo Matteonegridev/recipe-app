@@ -40,7 +40,7 @@ function useSaveRecipe(username: string) {
       );
       return { previousQuery };
     },
-    onError: (err, recipeId, context) => {
+    onError: (_err, _recipeId, context) => {
       queryClient.setQueryData(["saved-recipes"], context?.previousQuery);
     },
     onSettled: () => {
