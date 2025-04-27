@@ -36,16 +36,17 @@ function Navbar() {
         },
       )}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-around py-4">
-        <Link to="/" className="font-body text-3xl font-bold text-white">
-          Recipe
-          <span className="text-secondary-sandyBrown font-accents text-4xl">
-            Craft
-          </span>
-        </Link>
-
+      <nav className="mx-auto flex max-w-7xl items-center justify-around py-6 lg:justify-between">
+        <div className="">
+          <Link to="/" className="font-body text-3xl font-bold text-white">
+            Recipe
+            <span className="text-secondary-sandyBrown font-accents text-4xl">
+              Craft
+            </span>
+          </Link>
+        </div>
         {/* Desktop Nav */}
-        <ul className="hidden items-center gap-10 text-white lg:flex">
+        <ul className="hidden items-center gap-12 text-white lg:flex lg:justify-around">
           {navLinks.map(({ label, path }) => (
             <li key={path}>
               <Link
@@ -59,24 +60,26 @@ function Navbar() {
         </ul>
 
         {/* Desktop Auth Buttons */}
-        <div className="hidden items-center gap-4 lg:flex">
+        <div>
           {!isLogged ? (
-            <>
+            <div className="hidden gap-4 lg:flex lg:items-center">
               <Button
+                variant="secondary"
                 onClick={() => {
                   navigate("/auth/login");
                 }}
                 label="Login"
-                className="border-secondary-accent-1 font-body w-[8rem] cursor-pointer rounded-xl border py-2 text-xl font-bold text-white"
+                className="font-body hover:bg-secondary-sandyBrown hover:border-secondary-sandyBrown w-[8rem] cursor-pointer rounded-xl py-2 text-xl font-bold transition-colors duration-300"
               />
               <Button
+                variant="primary"
                 onClick={() => {
                   navigate("auth/register");
                 }}
                 label="Register"
-                className="bg-secondary-accent-1 font-body w-[8rem] cursor-pointer rounded-xl py-2 text-xl font-bold text-black"
+                className="font-body hover:bg-secondary-sandyBrown w-[8rem] cursor-pointer rounded-xl py-2 text-xl font-bold transition-colors duration-300 hover:text-white"
               />
-            </>
+            </div>
           ) : (
             <button
               onClick={logout}
@@ -145,20 +148,22 @@ function Navbar() {
             {!isLogged ? (
               <>
                 <Button
+                  variant="secondary"
                   onClick={() => {
                     navigate("/auth/login");
                     setIsMenuOpen(false);
                   }}
                   label="Login"
-                  className="border-secondary-accent-1 w-full border py-2 font-bold text-white"
+                  className="w-full py-2 font-bold"
                 />
                 <Button
+                  variant="primary"
                   onClick={() => {
                     navigate("/auth/register");
                     setIsMenuOpen(false);
                   }}
+                  className="w-full py-2 font-bold"
                   label="Register"
-                  className="bg-secondary-accent-1 w-full py-2 font-bold text-black"
                 />
               </>
             ) : (
