@@ -46,6 +46,10 @@ app.use(sanitize());
 // generate static files:
 app.use("/images", express.static(path.join(__dirname, "public", "images")));
 
+// app.get("/", (req, res) => {
+//   res.send("Welcome to the Recipe App API!");
+// });
+
 //Home:
 app.get("/home", recipeControllers.getRecipes);
 // user route:
