@@ -29,7 +29,7 @@ app.use(
   session({
     saveUninitialized: false,
     resave: false,
-    secret: "recipeapp",
+    secret: process.env.SESSION_SECRET,
   })
 );
 app.use(cookieParser());
@@ -37,7 +37,7 @@ app.use(passport.initialize());
 
 app.use(
   cors({
-    origin: process.env.NODE_ENV === "production" ? "" : "http://localhost:5173",
+    origin: process.env.NODE_ENV === "production" ? process.env.CLIENT_URL : "http://localhost:5173",
     credentials: true,
   })
 );
