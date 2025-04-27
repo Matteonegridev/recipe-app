@@ -1,9 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ReactNode, SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { AuthQueryContext } from "../hooks/useAuthQuery";
 import { useQueryClient } from "@tanstack/react-query";
+import api from "../lib/axios";
 
 type PropsContext = {
   children: ReactNode;
@@ -42,14 +43,12 @@ export type ContextAuthType = {
   isLogged: boolean;
 };
 
-const URL = "http://localhost:3000";
+// const URL = "http://localhost:3000";
 
 // Check activity, give back the data. Stale time 5 minutes.
 const fetchUser = async (): Promise<Credentials | null> => {
   try {
-    const response = await axios.get(`${URL}/user/profile`, {
-      withCredentials: true,
-    });
+    const response = await api.get(`/user/profile`);
     console.log("fetchUser:", response.data);
     return response.data;
   } catch (err) {
@@ -90,11 +89,7 @@ function AuthContextWithQuery({ children }: PropsContext) {
   // Login:
   const loginMutation = useMutation({
     mutationFn: async ({ username, password }: User): Promise<Credentials> => {
-      const response = await axios.post(
-        `${URL}/user/login`,
-        { username, password },
-        { withCredentials: true },
-      );
+      const response = await api.post(`/user/login`, { username, password });
       return response.data;
     },
     onSuccess: () => {
@@ -126,18 +121,14 @@ function AuthContextWithQuery({ children }: PropsContext) {
   // Register:
   const registerMutation = useMutation({
     mutationFn: async ({ username, password }: User): Promise<void> => {
-      return await axios.post(
-        `${URL}/user/register`,
-        { username, password },
-        { withCredentials: true },
-      );
+      return await api.post(`/user/register`, { username, password });
     },
   });
 
   // Logout:
   const logoutMutation = useMutation({
     mutationFn: async (): Promise<void> => {
-      await axios.post(`${URL}/user/logout`, {}, { withCredentials: true });
+      await api.post(`/user/logout`, {});
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

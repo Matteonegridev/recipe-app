@@ -18,8 +18,8 @@ function Card({ data }: { data: Recipes[] }) {
           <img
             src={
               recipes.imageUrl && inView
-                ? `http://localhost:3000${recipes.imageUrl}`
-                : "./assets/images/default.jpg"
+                ? `${import.meta.env.VITE_API_URL}${recipes.imageUrl}`
+                : "/assets/images/default.jpg"
             }
             alt="Recipe Image"
             className="h-full w-full rounded-t-lg object-cover"

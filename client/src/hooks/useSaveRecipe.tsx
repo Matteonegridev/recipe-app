@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { toast } from "react-toastify";
+import api from "../lib/axios";
 
 const saveRecipes = async (recipeId: string) => {
   try {
-    const res = await axios.put(
-      `http://localhost:3000/recipes`,
+    const res = await api.put(
+      `/recipes`,
       { recipeId },
       { withCredentials: true, validateStatus: () => true },
     );

@@ -1,8 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAuthQuery } from "../hooks/useAuthQuery";
 import { Link } from "react-router";
-// import ModalRecipe from "./ModalRecipe";
+import api from "../lib/axios";
 
 function Saved() {
   const { data } = useAuthQuery();
@@ -16,12 +15,7 @@ function Saved() {
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get(
-        `http://localhost:3000/recipes/${data?.username}`,
-        {
-          withCredentials: true,
-        },
-      );
+      const res = await api.get(`/${data?.username}`);
       console.log("recipes:", res.data);
       console.log("save:", res.data?.savedRecipes);
       setSavedRecipes(res.data.savedRecipes || []);

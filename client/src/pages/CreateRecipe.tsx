@@ -2,7 +2,7 @@ import { useState } from "react";
 import Input from "../components/Input";
 import Textarea from "../components/Textarea";
 import _ from "lodash";
-import axios from "axios";
+import api from "../lib/axios";
 import { useNavigate } from "react-router";
 import { Types } from "mongoose";
 import validateRecipeSchema, {
@@ -94,14 +94,13 @@ function CreateRecipe() {
 
     if (validationResult.success) {
       try {
-        const response = await axios.post(
-          "http://localhost:3000/recipes/create",
+        const response = await api.post(
+          "/recipes/create",
           { ...recipes },
           {
             headers: {
               "Content-Type": "multipart/form-data",
             },
-            withCredentials: true,
           },
         );
         navigate("/");
@@ -162,7 +161,6 @@ function CreateRecipe() {
                 onChange={(e) => handleChangeAddedIngredient(e, index)}
               />
               <button
-                // className="flex h-13 w-13 cursor-pointer items-center justify-center rounded-full bg-red-400 text-xl font-bold text-white max-sm:h-10 max-sm:w-10"
                 className="h-12 w-12 cursor-pointer self-end rounded-full text-xl font-bold text-black"
                 type="button"
                 onClick={() => removeIngredient(index)}
