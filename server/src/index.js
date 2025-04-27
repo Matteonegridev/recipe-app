@@ -30,23 +30,32 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.SESSION_SECRET,
+    cookie: {
+      sameSite: "none",
+      secure: true,
+    },
   })
 );
 app.use(cookieParser());
 app.use(passport.initialize());
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    const allowedOrigins = ["https://yourecipecraft.netlify.app", "http://localhost:5173"];
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     const allowedOrigins = ["https://yourecipecraft.netlify.app", "http://localhost:5173"];
+//     if (allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   credentials: true,
+// };
+app.use(
+  cors({
+    origin: process.env.NODE_ENV === "production" ? process.env.CLIENT_URL : "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 app.use(sanitize());
 // generate static files:
