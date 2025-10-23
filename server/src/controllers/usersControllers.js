@@ -15,7 +15,30 @@ const registerUser = async (req, res) => {
     const hashPassword = genPassword(password);
     const createUser = new User({ username, password: hashPassword });
     const saveUser = await createUser.save();
-    return res.status(200).send({ message: "user registered successfully" });
+
+    // create JWT token:
+    const payload = {
+      id: saveUser._id,
+      username: saveUser.username,
+    };
+
+    const signToken = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "20m",
+    });
+
+    res
+      .cookie("token", signToken, {
+        httpOnly: true,
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 20 * 60 * 1000,
+      })
+      .status(200)
+      .json({
+        id: saveUser._id.toString(),
+        username: saveUser.username,
+        savedRecipes: saveUser.savedRecipes || [],
+      });
   } catch (error) {
     return res.status(400).send({ message: "Wrong entries:", error });
   }
@@ -50,7 +73,7 @@ const loginUser = async (req, res) => {
     res
       .cookie("token", signToken, {
         httpOnly: true,
-        sameSite: "none",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         secure: process.env.NODE_ENV === "production",
         maxAge: 20 * 60 * 1000,
       })

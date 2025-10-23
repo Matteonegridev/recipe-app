@@ -25,17 +25,17 @@ connectDB(mongoUri);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(
-  session({
-    saveUninitialized: false,
-    resave: false,
-    secret: process.env.SESSION_SECRET,
-    cookie: {
-      sameSite: "none",
-      secure: true,
-    },
-  })
-);
+// app.use(
+//   session({
+//     saveUninitialized: false,
+//     resave: false,
+//     secret: process.env.SESSION_SECRET,
+//     cookie: {
+//       sameSite: "none",
+//       secure: true,
+//     },
+//   })
+// );
 app.use(cookieParser());
 app.use(passport.initialize());
 

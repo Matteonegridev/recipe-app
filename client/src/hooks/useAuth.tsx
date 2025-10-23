@@ -1,3 +1,5 @@
+// senza tanstack query
+
 import { useContext, createContext } from "react";
 import { AuthContextType } from "../context/AuthContext";
 

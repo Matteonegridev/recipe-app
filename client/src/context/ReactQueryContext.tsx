@@ -83,7 +83,7 @@ function AuthContextWithQuery({ children }: PropsContext) {
   };
 
   useEffect(() => {
-    console.log("🧠 Auth state changed:", { data, isLoading });
+    console.log("Auth state changed:", { data, isLoading });
   }, [data, isLoading]);
 
   // Login:
@@ -121,7 +121,15 @@ function AuthContextWithQuery({ children }: PropsContext) {
   // Register:
   const registerMutation = useMutation({
     mutationFn: async ({ username, password }: User): Promise<void> => {
-      return await api.post(`/user/register`, { username, password });
+      const response = await api.post(`/user/register`, { username, password });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+        refetchType: "active",
+      });
+      navigate("/");
     },
   });
 

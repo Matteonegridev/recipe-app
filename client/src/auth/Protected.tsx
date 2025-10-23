@@ -19,7 +19,7 @@ function Protected({ children }: Props) {
           </h1>
 
           <Link
-            to="/auth/login"
+            to="/login"
             className="bg-secondary-sandyBrown hover:bg-secondary-sandyBrown/90 block w-full rounded-lg px-6 py-3 text-lg font-semibold text-white shadow-sm transition"
           >
             Login
@@ -31,7 +31,7 @@ function Protected({ children }: Props) {
             </h2>
 
             <Link
-              to="/auth/register"
+              to="/register"
               className="bg-primary-green hover:bg-primary-green/90 mt-4 inline-block rounded-lg px-6 py-3 text-lg font-semibold text-white shadow-sm transition"
             >
               Create your account

@@ -21,8 +21,8 @@ function App() {
             <Route element={<NavbarLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/recipes/:recipeId" element={<ReadMore />} />
-              <Route path="/auth/login" element={<Login />} />
-              <Route path="/auth/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route
                 path="/create-recipe"
                 element={

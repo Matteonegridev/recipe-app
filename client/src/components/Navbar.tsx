@@ -60,13 +60,13 @@ function Navbar() {
         </ul>
 
         {/* Desktop Auth Buttons */}
-        <div className="max-md:hidden">
+        <div className="max-lg:hidden">
           {!isLogged ? (
             <div className="gap-4 lg:flex lg:items-center">
               <Button
                 variant="secondary"
                 onClick={() => {
-                  navigate("/auth/login");
+                  navigate("/login");
                 }}
                 label="Login"
                 className="font-body hover:bg-secondary-sandyBrown hover:border-secondary-sandyBrown w-[8rem] cursor-pointer rounded-xl py-2 text-xl font-bold transition-colors duration-300"
@@ -74,7 +74,7 @@ function Navbar() {
               <Button
                 variant="primary"
                 onClick={() => {
-                  navigate("auth/register");
+                  navigate("/register");
                 }}
                 label="Register"
                 className="font-body hover:bg-secondary-sandyBrown w-[8rem] cursor-pointer rounded-xl py-2 text-xl font-bold transition-colors duration-300 hover:text-white"
