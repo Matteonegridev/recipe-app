@@ -13,7 +13,7 @@ function Hero() {
           loading="lazy"
           src="./assets/images/hero.jpg"
           alt="Cooking Chef"
-          className="aspect-video h-full object-cover max-md:aspect-square"
+          className="aspect-video object-cover max-md:aspect-square"
         />
       </picture>
       <div className="absolute top-0 z-10 flex h-full w-full flex-col justify-center px-20 text-pretty max-md:top-3 max-md:px-14 max-sm:px-8">
