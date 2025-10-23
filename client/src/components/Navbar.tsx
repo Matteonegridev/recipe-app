@@ -127,7 +127,7 @@ function Navbar() {
         ></div>
         <div
           className={clsx(
-            "bg-primary-green absolute top-0 w-full p-6 shadow-lg transition-all duration-200 ease-in-out",
+            "bg-primary-green absolute top-0 z-40 w-full p-6 shadow-lg transition-all duration-200 ease-in-out",
             isMenuOpen ? "translate-x-0" : "-translate-x-full",
           )}
         >
@@ -150,7 +150,7 @@ function Navbar() {
                 <Button
                   variant="secondary"
                   onClick={() => {
-                    navigate("/auth/login");
+                    navigate("/login");
                     setIsMenuOpen(false);
                   }}
                   label="Login"
@@ -159,7 +159,7 @@ function Navbar() {
                 <Button
                   variant="primary"
                   onClick={() => {
-                    navigate("/auth/register");
+                    navigate("/register");
                     setIsMenuOpen(false);
                   }}
                   className="w-full py-2 font-bold"
