@@ -3,9 +3,7 @@ import useFetchRecipes from "../hooks/useFetchRecipes";
 import Hero from "../layout/Hero";
 
 function Home() {
-  const { data, isLoading } = useFetchRecipes();
-
-  if (isLoading) return <p>Loading...</p>;
+  const { data } = useFetchRecipes();
 
   if (!data) return <p>No data available</p>;
 

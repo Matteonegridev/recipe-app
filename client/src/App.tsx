@@ -11,8 +11,13 @@ import NavbarLayout from "./components/NavbarLayout";
 import ModalRecipe from "./pages/ModalRecipe";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
+import useFetchRecipes from "./hooks/useFetchRecipes";
+import Loading from "./components/Loading";
 
 function App() {
+  const { isLoading } = useFetchRecipes();
+
+  if (isLoading) return <Loading />;
   return (
     <div className="">
       <BrowserRouter>
