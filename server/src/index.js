@@ -61,8 +61,10 @@ app.use(sanitize());
 // generate static files:
 app.use("/images", express.static(path.join(__dirname, "public", "images")));
 
-// health endpoints useful for uptime checks
+// health endpoints
 app.get("/health", (req, res) => res.status(200).json({ status: "ok", uptime: process.uptime() }));
+
+app.get("/", (req, res) => res.status(200).send("OK"));
 
 //Home:
 app.get("/home", recipeControllers.getRecipes);
